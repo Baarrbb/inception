@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/06/27 00:02:23 by marvin           ###   ########.fr        #
+#    Updated: 2024/06/27 00:08:58 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,15 +26,15 @@ http {
 			index index.html index.htm;
 		}
 	}
-	server {
-		listen 80;
-		server_name localhost;
-		return 301 https://localhost;
-	}
 }
 endef
 export NGINX_CONF
 
+# server {
+# 	listen 80;
+# 	server_name localhost;
+# 	return 301 https://localhost;
+# }
 #curl -v -L http://localhost
 
 PATH_NGINX=./srcs/requirements/nginx
@@ -46,8 +46,7 @@ all :
 	@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $(PATH_NGINX)/certificates/private.key -out $(PATH_NGINX)/certificates/certificate.crt -subj "/C=/ST=/L=/O=/OU=/CN="
 	@ echo "$$NGINX_CONF" > $(PATH_NGINX)/nginx.conf
 	docker build ./srcs/requirements/nginx -t nginx
-	docker run -p80:80 -p443:443 nginx
-
+	docker run -p443:443 nginx
 
 fclean :
 	rm -rf $(PATH_NGINX)/certificates
