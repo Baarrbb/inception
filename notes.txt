@@ -9,14 +9,17 @@ http {
 
 		server_name localhost;
 
-		ssl_certificate /etc/ssl/certs/localhost.pem;
-		ssl_certificate_key /etc/ssl/private/localhost-key.pem;
+		ssl_certificate /etc/ssl/certs/certificate.crt;
+		ssl_certificate_key /etc/ssl/private/private.key;
 
 		ssl_protocols TLSv1.3;
 
 		location / {
 			root /usr/share/nginx/html;
 			index index.html index.htm;
+		}
+		location = /favicon.ico {
+			log_not_found off;
 		}
 	}
 }
@@ -33,6 +36,8 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048
 -keyout /chemin/ou/generer/private.key 
 -out  /chemin/ou/generer/certificate.crt 
 -subj "/C=/ST=/L=/O=/OU=/CN="
+
+
 # ajouter certificats sur machine local pour pas avoir de warning 
 NE MARCHE PAS
 sudo cp certificate.crt /usr/local/share/ca-certificates/
@@ -45,8 +50,9 @@ curl -v -k localhost
 curl -v -L http://localhost
 
 
-# GENERER CERTIFICATS + TRUST PAR FIREFOX
 
+
+# GENERER CERTIFICATS + TRUST PAR FIREFOX
 on install mkcert
 > sudo apt install mkcert libnss3-tools
 > mkcert -install
@@ -55,3 +61,17 @@ on deplace certificats dans le bon dossier
 POUR AJOUTER TRUST A FIREFOX
 on ajoute le certificat qui est dans ~/.local/share/mkcert/rootCA.pem
 
+
+# COMME CERTIFICATS GENERER DANS CONTAINER
+
+docker cp my-container:/path/to/certificates/localhost.pem /path/on/host/localhost.pem
+docker cp my-container:/path/to/certificates/localhost-key.pem /path/on/host/localhost-key.pem
+
+certutil -d sql:$HOME/.mozilla/firefox/path_to_profile -A -t "C,," -n "Local Cert" -i /path/on/host/localhost.pem
+
+
+# Preuve que ca tourne pas sur le port 80
+> curl -v http://localhost    -> connection refused
+
+#Preuve tourne sur 443
+> curl -v -k https://localhost

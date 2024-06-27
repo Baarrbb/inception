@@ -2,12 +2,14 @@ FROM debian:stable
 
 LABEL login="bsuc"
 
-RUN apt update -y && apt install -y nginx && apt install -y openssl
+RUN apt update -y && apt install -y nginx openssl
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/private.key -out /etc/ssl/certs/certificate.crt -subj "/C=/ST=/L=/O=/OU=/CN="
+
 
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
-COPY ./conf/certificates/localhost.pem /etc/ssl/certs/localhost.pem
-COPY ./conf/certificates/localhost-key.pem /etc/ssl/private/localhost-key.pem
 
 EXPOSE 443
+
+RUN 
 
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
