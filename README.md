@@ -19,6 +19,11 @@ On install nginx et openssl avec **RUN**<br>
 ```
 apt update
 ```
+`apt update`
+
+==apt update==
+~apt update~
+^apt update^
 
 On genere les certificats 
 
