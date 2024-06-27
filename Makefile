@@ -6,12 +6,11 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/06/27 21:00:35 by marvin           ###   ########.fr        #
+#    Updated: 2024/06/27 23:11:36 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-
-all : volume mariadb
+all : volume wordpress
 
 nginx :
 	docker build ./srcs/requirements/nginx -t nginx
@@ -23,13 +22,14 @@ volume :
 
 wordpress :
 	docker build ./srcs/requirements/wordpress -t wordpress
-	docker run -it --name wordpress wordpress bash
-	# docker run --name wordpress -v WP_files:/data wordpress
-# docker run -it --name wordpress -v WP_DB:/data wordpress bash
+	docker run -it --name wordpress -v WP_files:/var/www/html wordpress bash
+# docker run --name wordpress -v WP_files:/data wordpress
+# docker run -it --name wordpress -v WP_files:/data wordpress bash
 
 mariadb :
 	docker build ./srcs/requirements/mariadb -t mariadb
-	docker run --name mariadb -v DB:/data mariadb
+	docker run -it --name mariadb -v DB:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=1234 -p3306:3306 mariadb bash
+# docker run --name mariadb -v DB:/data mariadb
 
 fclean :
 	docker stop $(shell docker ps -qa); \
