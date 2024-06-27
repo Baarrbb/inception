@@ -18,8 +18,9 @@
 On install nginx et openssl avec **RUN**<br>
 
 `apt update` -> pour mettre a jour les paquets disponibles.
+
 `apt install nginx openssl` -> pour installer nginx (requit par le sujet) et openssl pour generer des certificats numerique pour securise communication.
-<br>
+
 On genere ensuite les certificats dont on a besoin pour mettre en place le protocol TLS avec :<br>
 `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/private.key -out /etc/ssl/certs/certificate.crt -subj "/C=/ST=/L=/O=/OU=/CN="'
 
