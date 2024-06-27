@@ -31,7 +31,7 @@ server {
 	return 301 https://localhost;
 }
 
-# Generer certificats ssl [DEPRECATED]
+# Generer certificats ssl
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 
 -keyout /chemin/ou/generer/private.key 
 -out  /chemin/ou/generer/certificate.crt 
