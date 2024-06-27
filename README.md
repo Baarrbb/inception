@@ -67,7 +67,6 @@ revient a
 ## nginx.conf
 
 	events {
-		worker_processes auto;
 		worker_connections 1024;
 	}
 	http {
@@ -98,7 +97,11 @@ Section qui configure les parametres lies aux evenements du serveur nginx.
 
 `worker_connections` -> definit le nb max de connexions simultanees que chaque processus worker peut gerer.
 
-`worker_processes auto;` -> Nginx détermine automatiquement le nombre optimal de processus worker à utiliser en fonction des capacités matérielles disponibles sur le système où il s'exécute.
+------
+
+voir cb de worker_processes par defaut
+
+------
 
 
 ### `http`
@@ -145,4 +148,6 @@ pour construire notre image a partid u dockerfile.<br>
 
 Maintenant notre container run comme il faut.
 On peut verifier que les connexion en http (port 80) ne sont pas autorise avec :<br>
-`curl -L -v http://localhost` 
+`curl -v http://localhost` -> connection refused<br>
+`curl -v -k https://localhost` -> connexion au port 443 parfait.<br>
+`-k` -> pour ignorer les problemes de certificats qui sont auto-signes.
