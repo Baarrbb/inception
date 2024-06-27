@@ -1,11 +1,35 @@
-# version: '3'
-# services:
-#   your_service_name:
-#     image: your_image_name
-#     restart: always
-#     ports:
-#       - "443:443"
-#     volumes:
-#       - ./nginx.conf:/etc/nginx/nginx.conf
-#       - ./certificates/certificate.crt:/etc/ssl/certs/certificate.crt
-#       - ./certificates/private.key:/etc/ssl/private/private.key
+version: "3"
+
+services:
+
+  wordpress:
+    build:
+      context: ./requirements/wordpress/
+    container_name: wordpress
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - "WP_files:/data"
+
+  mariadb:
+    build: ./requirements/mariadb/
+    container_name: mariadb
+    restart: always
+    ports:
+      - "3306:3306"
+
+  nginx:
+    build:
+      context: ./requirements/nginx/
+    container_name: nginx
+    restart: always
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+
+
+volumes:
+  WP_files:
+  DB:

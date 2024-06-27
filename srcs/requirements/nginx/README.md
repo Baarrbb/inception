@@ -22,6 +22,9 @@
 
 `apt install nginx openssl` -> pour installer nginx (requit par le sujet) et openssl pour generer des certificats numerique pour securise les communications.
 
+`-y` -> installation pas bloquante quand ca demande de confirmer que ca va installer tant de Mb sur la machine.
+
+
 ### On genere certificats pour protocole TLS
 
 On genere ensuite les certificats dont on a besoin pour mettre en place le protocol TLS avec :<br>
