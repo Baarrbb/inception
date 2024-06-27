@@ -1,11 +1,13 @@
-FROM debian:latest
+FROM debian:stable
+
+LABEL login="bsuc"
 
 RUN apt update -y && apt install -y nginx && apt install -y openssl
 
-COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY ./certificates/certificate.crt /etc/ssl/certs/certificate.crt
-COPY ./certificates/private.key /etc/ssl/private/private.key
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/certificates/localhost.pem /etc/ssl/certs/localhost.pem
+COPY ./conf/certificates/localhost-key.pem /etc/ssl/private/localhost-key.pem
 
-EXPOSE 443/tcp
+EXPOSE 443
 
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]

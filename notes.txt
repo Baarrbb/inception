@@ -1,0 +1,57 @@
+nginx conf :
+
+events {
+		worker_connections 1024;
+}
+http {
+	server {
+		listen 443 ssl;
+
+		server_name localhost;
+
+		ssl_certificate /etc/ssl/certs/localhost.pem;
+		ssl_certificate_key /etc/ssl/private/localhost-key.pem;
+
+		ssl_protocols TLSv1.3;
+
+		location / {
+			root /usr/share/nginx/html;
+			index index.html index.htm;
+		}
+	}
+}
+
+# a ajouter si on veut automatiquement rediriger vers https si on a p80
+server {
+	listen 80;
+	server_name localhost;
+	return 301 https://localhost;
+}
+
+# Generer certificats ssl [DEPRECATED]
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 
+-keyout /chemin/ou/generer/private.key 
+-out  /chemin/ou/generer/certificate.crt 
+-subj "/C=/ST=/L=/O=/OU=/CN="
+# ajouter certificats sur machine local pour pas avoir de warning 
+NE MARCHE PAS
+sudo cp certificate.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+
+
+# verifier port renvoyer par localhost
+
+curl -v -k localhost
+curl -v -L http://localhost
+
+
+# GENERER CERTIFICATS + TRUST PAR FIREFOX
+
+on install mkcert
+> sudo apt install mkcert libnss3-tools
+> mkcert -install
+> mkcert localhost
+on deplace certificats dans le bon dossier
+POUR AJOUTER TRUST A FIREFOX
+on ajoute le certificat qui est dans ~/.local/share/mkcert/rootCA.pem
+
