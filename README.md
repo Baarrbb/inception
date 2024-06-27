@@ -121,7 +121,11 @@ Emplacement ou on a copie dans le Dockerfile.<br>
 `root /usr/share/nginx/html;` -> specifie repertoire racine a partir du quel nginx cherche les fichiers a afficher.<br>
 `index index.html. index.htm;` -> fichiers index a afficher par defaut si aucun fichier specifique est demande dans l'url.<br>
 
+---------
+
 Voir fichier dans /usr/share/nginx/html dans container mais dans mon souvenir il y a que index.html donc on peut virer les autres.
+
+-------
 
 `location = /favicon.ico {
 	log_not_found off;
