@@ -100,7 +100,7 @@ Section qui configure les parametres lies aux evenements du serveur nginx.
 
 ------
 
-voir cb de worker_processes par defaut
+voir cb de worker_processes par defaut<br>
 worker_processes par default = 1 ?
 
 ------
