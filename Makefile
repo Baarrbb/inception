@@ -6,12 +6,12 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/06/27 18:25:35 by marvin           ###   ########.fr        #
+#    Updated: 2024/06/27 21:00:35 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-all : volume wordpress
+all : volume mariadb
 
 nginx :
 	docker build ./srcs/requirements/nginx -t nginx
@@ -28,10 +28,16 @@ wordpress :
 # docker run -it --name wordpress -v WP_DB:/data wordpress bash
 
 mariadb :
-	docker build ./srcs/requirements/maraidb -t mariadb
+	docker build ./srcs/requirements/mariadb -t mariadb
 	docker run --name mariadb -v DB:/data mariadb
 
 fclean :
+	docker stop $(shell docker ps -qa); \
+	docker rm $(shell docker ps -qa); \
+	docker rmi -f $(shell docker images -qa); \
+	docker volume rm $(shell docker volume ls -q); \
+	docker network rm $(shell docker network ls -q) 2> /dev/null
+
 	# docker stop nginx
 	# docker rm nginx
 	# docker rmi nginx
