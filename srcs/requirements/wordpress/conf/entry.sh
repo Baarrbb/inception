@@ -2,4 +2,4 @@
 
 mv /wordpress/* /var/www/html/
 
-bash
+php-fpm8.2 -F -y /etc/php/8.2/fpm/php-fpm.conf

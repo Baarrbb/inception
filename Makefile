@@ -6,11 +6,11 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/06/27 23:11:36 by marvin           ###   ########.fr        #
+#    Updated: 2024/06/28 17:02:38 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-all : volume wordpress
+all : volume mariadb
 
 nginx :
 	docker build ./srcs/requirements/nginx -t nginx

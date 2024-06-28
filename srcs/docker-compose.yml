@@ -2,6 +2,22 @@ version: "3"
 
 services:
 
+  mariadb:
+    build: ./requirements/mariadb/
+    container_name: mariadb
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: wordpress_db
+      MYSQL_USER: wordpress_user
+      MYSQL_PASSWORD: 1234
+    volumes:
+      - "DB:/var/lib/mysql"
+    networks:
+      - webnet
+
   wordpress:
     build:
       context: ./requirements/wordpress/
@@ -9,6 +25,8 @@ services:
     restart: always
     ports:
       - "9000:9000"
+    depends_on:
+      - mariadb
     volumes:
       - "WP_files:/var/www/html"
     networks:
@@ -27,17 +45,6 @@ services:
       - "WP_files:/var/www/html"
     networks:
       - webnet
-
-
-  # mariadb:
-  #   build: ./requirements/mariadb/
-  #   container_name: mariadb
-  #   restart: always
-  #   ports:
-  #     - "3306:3306"
-  #   volumes:
-  #     - "DB:/var/lib/mysql"
-
 
 volumes:
   WP_files:
