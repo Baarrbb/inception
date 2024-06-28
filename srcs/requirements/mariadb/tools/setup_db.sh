@@ -10,10 +10,6 @@ echo "GRANT ALL ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' IDENTIFIED BY 'WPpassw
 echo "GRANT ALL ON $MYSQL_DATABASE.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;" | mysql
 echo "FLUSH PRIVILEGES;" | mysql
 
-# kill $(cat /var/run/mysqld/mysqld.pid)
-
-# bash
-
 mysqladmin shutdown
 
 mysqld_safe
