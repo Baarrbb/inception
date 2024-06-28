@@ -25,13 +25,23 @@ COPY ./conf/test_50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 EXPOSE 3306
 
-COPY ./conf/test.sh /
-RUN chmod +x test.sh
+# COPY ./conf/test.sh /
+# RUN chmod +x test.sh
 
 RUN mkdir -p /run/mysqld
 RUN chown -R mysql /run/mysqld
+# RUN mysqld &
 
-CMD ["bash"]
+COPY ./conf/test2.sh /
+RUN chmod +x test2.sh
+
+ENTRYPOINT ["./test2.sh"]
+
+# CMD ["bash"]
+
+# ENTRYPOINT ["./test2.sh"]
+
+# CMD ["bash"]
 # ENTRYPOINT ["/test.sh"]
 
 # CMD ["mysqld"]
