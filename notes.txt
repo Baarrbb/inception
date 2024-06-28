@@ -3,3 +3,5 @@ docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker
 
 Dans www.conf
 # listen = /run/php/php8.1-fpm.sock
+
+https://github.com/waltergcc/42-inception/blob/main/inception/srcs/requirements/mariadb/tools/setup.sh
