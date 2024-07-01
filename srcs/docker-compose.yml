@@ -9,14 +9,16 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: qwerty
-      MYSQL_DATABASE: wordpress_db
-      MYSQL_USER: wordpress_user
-      MYSQL_PASSWORD: qwerty
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWD: ${MYSQL_PASSWD}
+      MYSQL_ADMIN: ${MYSQL_ADMIN}
+      MYSQL_ADMIN_PASSWD: ${MYSQL_ADMIN_PASSWD}
     volumes:
-      - "DB:/var/lib/mysql"
+      # - "/home/barb/data:/var/lib/mysql"
+      - "WP_db:/var/lib/mysql"
     networks:
-      - webnet
+      - default
 
   wordpress:
     build:
@@ -25,17 +27,18 @@ services:
     restart: always
     ports:
       - "9000:9000"
-    environment:
-      MYSQL_ROOT_PASSWORD: qwerty
-      MYSQL_DATABASE: wordpress_db
-      MYSQL_USER: wordpress_user
-      MYSQL_PASSWORD: qwerty
     depends_on:
       - mariadb
+    environment:
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWD: ${MYSQL_PASSWD}
+      HOST_DB: ${HOST_DB}
     volumes:
+      # - "/home/barb/data:/var/www/html"
       - "WP_files:/var/www/html"
     networks:
-      - webnet
+      - default
 
   nginx:
     build:
@@ -47,14 +50,15 @@ services:
     depends_on:
       - wordpress
     volumes:
+      # - "/home/barb/data:/var/www/html"
       - "WP_files:/var/www/html"
     networks:
-      - webnet
+      - default
 
 volumes:
+  WP_db:
   WP_files:
-  DB:
 
 networks:
-  webnet:
+  default:
     driver: bridge

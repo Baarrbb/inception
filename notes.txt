@@ -5,3 +5,7 @@ Dans www.conf
 # listen = /run/php/php8.1-fpm.sock
 
 https://github.com/waltergcc/42-inception/blob/main/inception/srcs/requirements/mariadb/tools/setup.sh
+
+
+ajouter dans /etc/hosts
+0.0.0.0		bsuc.42.fr

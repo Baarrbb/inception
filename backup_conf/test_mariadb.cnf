@@ -1,8 +1,0 @@
-
-[client-server]
-socket = /run/mysqld/mysqld.sock
-
-[mysqld]
-innodb_use_native_aio=OFF
-log-bin=mysql-bin
-expire-logs-days=7
