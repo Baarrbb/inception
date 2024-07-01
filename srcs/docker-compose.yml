@@ -9,10 +9,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: qwerty
       MYSQL_DATABASE: wordpress_db
       MYSQL_USER: wordpress_user
-      MYSQL_PASSWORD: 1234
+      MYSQL_PASSWORD: qwerty
     volumes:
       - "DB:/var/lib/mysql"
     networks:
@@ -25,6 +25,11 @@ services:
     restart: always
     ports:
       - "9000:9000"
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty
+      MYSQL_DATABASE: wordpress_db
+      MYSQL_USER: wordpress_user
+      MYSQL_PASSWORD: qwerty
     depends_on:
       - mariadb
     volumes:
