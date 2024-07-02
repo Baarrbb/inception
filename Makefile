@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/07/02 17:43:51 by marvin           ###   ########.fr        #
+#    Updated: 2024/07/02 21:23:19 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ all :
 # @ sudo rm -rf /home/bsuc
 	@ sudo mkdir -p /home/bsuc/data/db
 	@ sudo mkdir -p /home/bsuc/data/wp_files
-	@ docker compose -f ./srcs/docker-compose.yml up
+	@ docker compose -f ./srcs/docker-compose.yml up -d
 
 fclean :
 	@ sudo rm -rf /home/bsuc
