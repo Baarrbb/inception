@@ -1,4 +1,3 @@
-version: "3"
 
 services:
 
@@ -40,6 +39,7 @@ services:
       - "443:443"
     depends_on:
       - wordpress
+    env_file: .env
     volumes:
       # - "/home/barb/data:/var/www/html"
       - "WP_files:/var/www/html"
