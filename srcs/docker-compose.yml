@@ -9,14 +9,12 @@ services:
       - "3306:3306"
     env_file: .env
     volumes:
-      # - "/home/barb/data:/var/lib/mysql"
-      - "WP_db:/var/lib/mysql"
+      - "DB:/var/lib/mysql"
     networks:
-      - test
+      - default
 
   wordpress:
-    build:
-      context: ./requirements/wordpress/
+    build: ./requirements/wordpress/
     container_name: wordpress
     restart: always
     ports:
@@ -25,36 +23,37 @@ services:
       - mariadb
     env_file: .env
     volumes:
-      # - "/home/barb/data:/var/www/html"
       - "WP_files:/var/www/html"
     networks:
-      - test
+      - default
 
   nginx:
-    build:
-      context: ./requirements/nginx/
+    build: ./requirements/nginx/
     container_name: nginx
     restart: always
     ports:
       - "443:443"
     depends_on:
       - wordpress
-    env_file: .env
     volumes:
-      # - "/home/barb/data:/var/www/html"
       - "WP_files:/var/www/html"
     networks:
-      - test
+      - default
 
 volumes:
-  WP_db:
   WP_files:
-
-# networks:
-#   default:
-#     driver: bridge
+    driver: local
+    driver_opts:
+      type : none
+      o: bind
+      device: "/home/bsuc/data/wp_files"
+  DB:
+    driver: local
+    driver_opts:
+      type : none
+      o: bind
+      device: "/home/bsuc/data/db"
 
 networks:
-  test:
-    name: test
+  default:
     driver: bridge

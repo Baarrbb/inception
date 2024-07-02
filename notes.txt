@@ -13,3 +13,5 @@ ajouter dans /etc/hosts
 
 docker exec wordpress wp user list --allow-root --path=/var/www/html
 
+DANS LE MAKEFILE IL FAUT CONSTRUIRE LE DOSSIER DB MANUELLEMENT
+

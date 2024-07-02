@@ -13,5 +13,3 @@ echo "FLUSH PRIVILEGES;" | mysql
 mysqladmin shutdown
 
 mysqld_safe
-
-# bash

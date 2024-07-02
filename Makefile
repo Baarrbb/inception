@@ -6,44 +6,20 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/06/28 17:02:38 by marvin           ###   ########.fr        #
+#    Updated: 2024/07/02 17:43:51 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-all : volume mariadb
-
-nginx :
-	docker build ./srcs/requirements/nginx -t nginx
-	docker run --name nginx -p443:443 nginx
-
-volume :
-	docker volume create WP_files
-	docker volume create DB
-
-wordpress :
-	docker build ./srcs/requirements/wordpress -t wordpress
-	docker run -it --name wordpress -v WP_files:/var/www/html wordpress bash
-# docker run --name wordpress -v WP_files:/data wordpress
-# docker run -it --name wordpress -v WP_files:/data wordpress bash
-
-mariadb :
-	docker build ./srcs/requirements/mariadb -t mariadb
-	docker run -it --name mariadb -v DB:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=1234 -p3306:3306 mariadb bash
-# docker run --name mariadb -v DB:/data mariadb
+all :
+# @ sudo rm -rf /home/bsuc
+	@ sudo mkdir -p /home/bsuc/data/db
+	@ sudo mkdir -p /home/bsuc/data/wp_files
+	@ docker compose -f ./srcs/docker-compose.yml up
 
 fclean :
-	docker stop $(shell docker ps -qa); \
-	docker rm $(shell docker ps -qa); \
-	docker rmi -f $(shell docker images -qa); \
-	docker volume rm $(shell docker volume ls -q); \
-	docker network rm $(shell docker network ls -q) 2> /dev/null
-
-	# docker stop nginx
-	# docker rm nginx
-	# docker rmi nginx
-
-	# docker volume rm WP_DB
-
-	# docker stop wordpress
-	# docker rm wordpress
-	# docker rmi wordpress
+	@ sudo rm -rf /home/bsuc
+	@ docker ps -qa | xargs docker stop 2> /dev/null || true
+	@ docker ps -qa | xargs docker rm 2> /dev/null || true
+	@ docker images -qa | xargs docker rmi -f 2> /dev/null || true
+	@ docker volume ls -q | xargs docker volume rm 2> /dev/null || true
+	@ docker network ls -q | xargs docker network rm 2> /dev/null || true
