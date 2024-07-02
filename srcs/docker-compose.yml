@@ -8,17 +8,12 @@ services:
     restart: always
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_DB: ${MYSQL_DB}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWD: ${MYSQL_PASSWD}
-      MYSQL_ADMIN: ${MYSQL_ADMIN}
-      MYSQL_ADMIN_PASSWD: ${MYSQL_ADMIN_PASSWD}
+    env_file: .env
     volumes:
       # - "/home/barb/data:/var/lib/mysql"
       - "WP_db:/var/lib/mysql"
     networks:
-      - default
+      - test
 
   wordpress:
     build:
@@ -29,16 +24,12 @@ services:
       - "9000:9000"
     depends_on:
       - mariadb
-    environment:
-      MYSQL_DB: ${MYSQL_DB}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWD: ${MYSQL_PASSWD}
-      HOST_DB: ${HOST_DB}
+    env_file: .env
     volumes:
       # - "/home/barb/data:/var/www/html"
       - "WP_files:/var/www/html"
     networks:
-      - default
+      - test
 
   nginx:
     build:
@@ -53,12 +44,17 @@ services:
       # - "/home/barb/data:/var/www/html"
       - "WP_files:/var/www/html"
     networks:
-      - default
+      - test
 
 volumes:
   WP_db:
   WP_files:
 
+# networks:
+#   default:
+#     driver: bridge
+
 networks:
-  default:
+  test:
+    name: test
     driver: bridge

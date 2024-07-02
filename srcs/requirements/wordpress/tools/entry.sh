@@ -1,26 +1,19 @@
 #!/bin/sh
 
-# mv /wordpress/* /var/www/html/
-
-# echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
-
-# chown -R www-data:www-data /var/www/html
-
-
-
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
-useradd -m -s /bin/bash test
-chown -R test /var/www/html
-cp /etc/skel/.bashrc /home/test/
+wp core download --allow-root --path=/var/www/html
 
-su test -c 'wp core download --path=/var/www/html'
+# Genere le wp-config.php
+cd /var/www/html
+wp config create --allow-root --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWD --dbhost=$WP_HOST_DB
 
-mv /wp-config.php /var/www/html/
+# CREATE ADMIN
+wp core install --allow-root --path=/var/www/html --url=$DOMAIN_NAME --title="Inception" --admin_user=$WP_ADMIN --admin_password=$WP_ADMIN_PASSWD --admin_email=$WP_ADMIN_EMAIL
 
-su test -c 'wp core install --path=/var/www/html --url=localhost --title="Inception" --admin_user=wpcli --admin_password=wpcli --admin_email=test@test.test'
-# su test -c 'wp core install --path=/var/www/html --url=bsuc.42.fr --title="Inception" --admin_user=wpcli --admin_password=wpcli --admin_email=test@test.test'
+# CREATE USER
+wp user create --allow-root --path=/var/www/html $WP_USER $WP_EMAIL --user_pass=$WP_PASSWD --role=$WP_USER_ROLE
 
 php-fpm8.2 -F -y /etc/php/8.2/fpm/php-fpm.conf
