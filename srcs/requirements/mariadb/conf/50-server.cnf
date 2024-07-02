@@ -2,8 +2,10 @@
 
 [mysqld]
 
-log_warnings=0
-log_error=/var/log/mariadb/mariadb_error.log
+log_warnings			= 0
+log_error				= /var/log/mariadb/mariadb.log
+
+innodb_use_native_aio	= OFF
 
 user					= mysql
 pid-file				= /run/mysqld/mysqld.pid
@@ -14,7 +16,6 @@ datadir					= /var/lib/mysql
 
 bind-address			= 0.0.0.0
 
-expire_logs_days		= 10
 
 character-set-server	= utf8mb4
 collation-server		= utf8mb4_general_ci
