@@ -3,6 +3,8 @@ FROM debian:stable
 
 RUN apt update -y && apt install -y mariadb-server
 
+RUN mkdir -p /var/log/mariadb
+RUN chown -R mysql /var/log/mariadb
 RUN mkdir -p /run/mysqld
 RUN chown -R mysql /run/mysqld
 
