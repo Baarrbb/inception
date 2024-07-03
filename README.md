@@ -41,9 +41,9 @@ A Dockerfile provides instructions to build a container image while a Compose fi
 
 #### Images
  - List images<br>
- ` $ docker images`
+ `$ docker images`
  - Remove an image<br>
- ```$ docker rmi <id>```
+    $ docker rmi [id]
 
 ##
 ##
