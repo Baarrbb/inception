@@ -41,10 +41,30 @@ A Dockerfile provides instructions to build a container image while a Compose fi
 
 #### Images
  - List images<br>
- `$ docker images`
+
+		$ docker images
  - Remove an image
 
-		$ docker rmi [id]
+		$ docker rmi [ID]
+ - Remove all images
+
+		$ docker rmi -f $(docker images -qa)
+#### Containers
+ - List containers
+
+		$ docker ps -a
+ - Stop container
+
+		$ docker stop [ID]
+ - Stop all containers
+
+		$ docker stop $(docker ps -qa)
+ - Remove container
+
+		$ docker rm [ID]
+ - Remove all containers
+
+		$ docker rm $(docker ps -qa)
 
 
 
