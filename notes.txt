@@ -4,14 +4,11 @@ docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker
 Dans www.conf
 # listen = /run/php/php8.1-fpm.sock
 
-https://github.com/waltergcc/42-inception/blob/main/inception/srcs/requirements/mariadb/tools/setup.sh
-
 
 ajouter dans /etc/hosts
-0.0.0.0		bsuc.42.fr
+0.0.0.0		login.42.fr
 
 
 docker exec wordpress wp user list --allow-root --path=/var/www/html
 
-DANS LE MAKEFILE IL FAUT CONSTRUIRE LE DOSSIER DB MANUELLEMENT
 
