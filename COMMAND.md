@@ -1,4 +1,10 @@
-#### Images
+## Sections
+ - [Images](#images)
+ - [Containers](#containers)
+ - [Volumes](#volumes)
+ - [Networks](#networks)
+
+### Images
  - List images<br>
 
 		$ docker images
@@ -8,7 +14,7 @@
  - Remove all images
 
 		$ docker rmi -f $(docker images -qa)
-#### Containers
+### Containers
  - List containers
 
 		$ docker ps -a
@@ -27,7 +33,7 @@
  - Exec cmd in a container
 
 		$ docker exec [ID] [cmd] [args]
-#### Volumes
+### Volumes
  - List volumes
 
 		$ docker volume ls

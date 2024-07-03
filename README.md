@@ -38,7 +38,10 @@ You don't always need to recreate everything from scratch. If you make a change,
 A Dockerfile provides instructions to build a container image while a Compose file defines your running containers. Quite often, a Compose file references a Dockerfile to build an image to use for a particular service.
 
 ### [Basic command](./COMMAND.md)
-
+ - [Images](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#images)
+ - [Containers](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#containers)
+ - [Volumes](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#volumes)
+ - [Networks](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#networks)
 
 
 ##
