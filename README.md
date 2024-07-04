@@ -382,7 +382,7 @@ This block defines the configuration for a server.
 
 
 
-`listen 443 ssl;` -> indique a nginx d'ecouter sur le port 443 et d'utiliser ssl.<br>
+<!-- `listen 443 ssl;` -> indique a nginx d'ecouter sur le port 443 et d'utiliser ssl.<br>
 `server_name localhost;` -> configure nom du server pour cette conf, icic localhost.<br>
 `ssl_certificate /etc/ssl/certs/certificate.crt;` -> Specifie chemin vers le certificat SSL utilise par le serveur.
 Emplacement ou on a copie dans le Dockerfile.<br>
@@ -422,7 +422,7 @@ Maintenant notre container run comme il faut.
 On peut verifier que les connexion en http (port 80) ne sont pas autorise avec :<br>
 `curl -v http://localhost` -> connection refused<br>
 `curl -v -k https://localhost` -> connexion au port 443 parfait.<br>
-`-k` -> pour ignorer les problemes de certificats qui sont auto-signes.
+`-k` -> pour ignorer les problemes de certificats qui sont auto-signes. -->
 
 
 
