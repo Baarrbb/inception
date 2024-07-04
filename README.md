@@ -14,6 +14,7 @@ Docker is a tool that is used to automate the deployment of applications in ligh
 ![Schema](./readme_img/Struct.png)
 
 #
+<br>
 
 ## Dockerfile
 Docker can build images automatically by reading the instructions from a Dockerfile.<br>
