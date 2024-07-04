@@ -9,12 +9,9 @@ Docker provides the ability to package and run an application in an isolated env
 
 Docker is a tool that is used to automate the deployment of applications in lightweight containers so that applications can work efficiently in different environments in isolation.
 
-#
 
 ![Schema](./readme_img/Struct.png)
 
-#
-<br>
 
 ## Dockerfile
 Docker can build images automatically by reading the instructions from a Dockerfile.<br>
