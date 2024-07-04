@@ -84,7 +84,7 @@ A Dockerfile provides instructions to build a container image while a Compose fi
 
 		$ docker rmi -f $(docker images -qa)
 </details>
-<br>
+
 <details>
 <summary><strong>Containers</strong></summary>
 
