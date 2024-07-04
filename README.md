@@ -20,7 +20,7 @@ It define the steps needed to create the image and run it. Each instruction crea
 
 It is the source code of the image.
 
-<a href="https://docs.docker.com/reference/dockerfile/" target="_blank">(Dockerfile reference)</a>
+[(Dockerfile reference)](https://docs.docker.com/reference/dockerfile/)
 
 ## Images
 An image is a read-only template with instructions for creating a Docker container.
@@ -62,11 +62,72 @@ Docker Compose manages multi-container setups and networking.
 A Dockerfile provides instructions to build a container image while a Compose file defines your running containers. Quite often, a Compose file references a Dockerfile to build an image to use for a particular service.
 
 
-## [Docker CLI Basic commands](./COMMAND.md)
+<!-- ## [Docker CLI Basic commands](./COMMAND.md)
  - [Images](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#images)
  - [Containers](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#containers)
  - [Volumes](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#volumes)
- - [Networks](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#networks)
+ - [Networks](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#networks) -->
+
+## Docker CLI basic commands
+
+### Sections
+ - [Images](#images)
+ - [Containers](#containers)
+ - [Volumes](#volumes)
+ - [Networks](#networks)
+
+##
+##
+
+### Images
+ - List images<br>
+
+		$ docker images
+ - Remove an image
+
+		$ docker rmi [ID]
+ - Remove all images
+
+		$ docker rmi -f $(docker images -qa)
+### Containers
+ - List containers
+
+		$ docker ps -a
+ - Stop container
+
+		$ docker stop [ID]
+ - Stop all containers
+
+		$ docker stop $(docker ps -qa)
+ - Remove container
+
+		$ docker rm [ID]
+ - Remove all containers
+
+		$ docker rm $(docker ps -qa)
+ - Exec cmd in a container
+
+		$ docker exec [ID] [cmd] [args]
+### Volumes
+ - List volumes
+
+		$ docker volume ls
+ - Remove a volume
+
+		$ docker volume rm [ID]
+ - Remove all volumes
+
+		$ docker volume rm $(docker volume ls -q)
+### Networks
+ - List networks
+
+		$ docker network ls
+ - Remove a network
+
+		$ docker network rm [ID]
+ - Remove all networks
+
+		$ docker network rm $(docker network ls -q)
 
 
 ##
