@@ -124,6 +124,7 @@ A Dockerfile provides instructions to build a container image while a Compose fi
 
 <details>
 <summary><strong>Networks</strong></summary>
+
  - List networks
 
 		$ docker network ls
@@ -134,6 +135,8 @@ A Dockerfile provides instructions to build a container image while a Compose fi
 
 		$ docker network rm $(docker network ls -q)
 </details>
+
+[Docker CLI commands reference](https://docs.docker.com/reference/cli/docker/)
 
 ##
 ##
