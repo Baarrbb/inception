@@ -1,4 +1,4 @@
-# Inception
+# INCEPTION
 
 Broaden knowledge of system administration by using Docker.
 Virtualize several Docker images and set up a small infrastructure composed of different services. Each service has to run in a dedicated container.
@@ -20,7 +20,7 @@ It define the steps needed to create the image and run it. Each instruction crea
 
 It is the source code of the image.
 
-[(Dockerfile reference)](https://docs.docker.com/reference/dockerfile/)
+<a href="https://docs.docker.com/reference/dockerfile/" target="_blank">(Dockerfile reference)</a>
 
 ## Images
 An image is a read-only template with instructions for creating a Docker container.
