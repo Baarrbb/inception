@@ -12,9 +12,9 @@ Virtualize several Docker images and set up a small infrastructure composed of d
 	- [Docker CLI basic commands](#docker-cli-basic-commands)
 	- [Questions](#questions)
  2. [Services](#services)
-	- [NGINX with TLSv1.3](#a-docker-container-that-contains-nginx-with-tlsv12-or-tlsv13-only)
-	- [WordPress + php-fpm](#a-docker-container-that-contains-wordpress--php-fpm-only)
-	- [MariaDB](#a-docker-container-that-contains-mariadb-only)
+	- [NGINX with TLSv1.3](#nginx-with-tlsv13)
+	- [WordPress + php-fpm](#)
+	- [MariaDB](#)
  3. [Volumes]()
 	- [WordPress database]()
 	- [WordPress website files]()
@@ -435,13 +435,9 @@ On peut verifier que les connexion en http (port 80) ne sont pas autorise avec :
 (it must be installed and configured)<br>
 Without nginx
 
-- [WordPress + php-fpm](./srcs/requirements/wordpress/README.md)
-
 ## A Docker container that contains MariaDB only
 
 Without nginx
-
-- [MariaDB](./srcs/requirements/mariadb/README.md)
 
 ##
 
