@@ -262,10 +262,9 @@ Generate certificates to use TLS protocol :
 `-x509` : outputs a self signed certificate instead of a certificate request<br>
 `-nodes` : (no DES) not encrypt the private key. (don't ask for a password)<br>
 `-days 365` : validity period of the certificate (when *-x509* is being used)<br>
-`-newkey rsa:2048` : (*-newkey rsa:nbits*) generates a new RSA private/public key pair with a length of 2048 bits.
-path to register the private key
-`-keyout ` : path to save the private key<br>
-`-out ` : path to save the self-signed certificate<br>
+`-newkey rsa:2048` : (*-newkey rsa:nbits*) generates a new RSA private/public key pair with a length of 2048 bits.<br>
+`-keyout` : path to save the private key<br>
+`-out` : path to save the self-signed certificate<br>
 `-subj "/C=/ST=/L=/O=/OU=/CN="` : replaces subject field of input request with specified data. Avoid prompt asking for certificate informations.
 
 
