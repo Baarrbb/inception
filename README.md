@@ -70,15 +70,6 @@ A Dockerfile provides instructions to build a container image while a Compose fi
 
 ## Docker CLI basic commands
 
-### Sections
- - [Images](#images)
- - [Containers](#containers)
- - [Volumes](#volumes)
- - [Networks](#networks)
-
-##
-##
-
 ### Images
  - List images<br>
 
