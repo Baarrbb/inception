@@ -14,21 +14,32 @@ Docker is a tool that is used to automate the deployment of applications in ligh
 
 
 ## Dockerfile
-Docker can build images automatically by reading the instructions from a Dockerfile.<br>
-A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image. It's a stand-alone executable. It contains all of the component required to run a piece of software, including code, librairies, environment variables ...
+A Dockerfile is a text document that contains instructions for generating a Docker **image**.
 
+It define the steps needed to create the image and run it. Each instruction create a layer in the image. That includes all the files, binaries, libraries, and configurations to run a container.
+
+It is the source code of the image.
+
+[(Dockerfile reference)](https://docs.docker.com/reference/dockerfile/)
 
 ## Images
-An image is a read-only template with instructions for creating a Docker container.<br>
-To build your own image, you create a **Dockerfile** with a simple syntax for defining the steps needed to create the image and run it. Each instruction in a Dockerfile creates a layer in the image. That includes all of the files, binaries, libraries, and configurations to run a container.
+An image is a read-only template with instructions for creating a Docker container.
+
+Docker Image is an executable package of software that includes everything needed to run an application. This image informs how a container should instantiate, determining which software components will run and how.
+
+Base Image: The foundational layer, often a minimal OS or runtime environment.<br>
+Layers: Immutable filesystem layers stacked to form a complete image.
 
 ### Images are :
  - **Immutable**. Once an image is created, it can't be modified. You can only make a new image or add changes on top of it.
  - **Composed of layers**. Each layer represented a set of file system changes that add, remove, or modify files.
 
 ## Containers
-A container is a runnable instance of an image.<br>
-You can connect a container to one or more networks or attach storage to it. A container is defined by its image as well as any configuration options you provide to it when you create or start it.<br>
+A container is a runnable instance of an image.
+
+You can connect a container to one or more networks or attach storage to it. A container is defined by its image as well as any configuration options you provide to it when you create or start it.
+
+
 Best practice for containers is that each container should do one thing and do it well.
 
 ### Containers are :
@@ -41,13 +52,17 @@ Best practice for containers is that each container should do one thing and do i
 A VM is an entire operating system with its own kernel, hardware drivers, programs and applications. A container is simply an isolated process with all the files is need to run.
 
 ## Docker compose
-With Docker Compose, you can define all of your containers and their configurations in a single YAML file.<br>
+With Docker Compose, you can define all of your containers and their configurations in a single YAML file.
+
 You don't always need to recreate everything from scratch. If you make a change, run *docker compose up* again and Compose will reconcile the changes in your file and apply them intelligently.
+
+Docker Compose manages multi-container setups and networking.
 
 ### Dockerfile VS Compose file
 A Dockerfile provides instructions to build a container image while a Compose file defines your running containers. Quite often, a Compose file references a Dockerfile to build an image to use for a particular service.
 
-## [Basic commands](./COMMAND.md)
+
+## [Docker CLI Basic commands](./COMMAND.md)
  - [Images](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#images)
  - [Containers](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#containers)
  - [Volumes](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#volumes)
