@@ -3,6 +3,13 @@
 Broaden knowledge of system administration by using Docker.
 Virtualize several Docker images and set up a small infrastructure composed of different services. Each service has to run in a dedicated container.
 
+# Table of contents
+ 1. [Docker basics](#docker-basics)
+	- [Dockerfile](#dockerfile)
+	- [Images](#images)
+	- [Containers](#containers)
+	- [Docker compose](#docker-compose)
+	- [Docker CLI basic commands](#docker-cli-basic-commands)
 
 # Docker basics
 Docker provides the ability to package and run an application in an isolated environment called a **container**. Containers are lightweight and contain everything needed to run the application.
@@ -60,14 +67,6 @@ Docker Compose manages multi-container setups and networking.
 
 ### Dockerfile VS Compose file
 A Dockerfile provides instructions to build a container image while a Compose file defines your running containers. Quite often, a Compose file references a Dockerfile to build an image to use for a particular service.
-
-
-<!-- ## [Docker CLI Basic commands](./COMMAND.md)
- - [Images](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#images)
- - [Containers](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#containers)
- - [Volumes](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#volumes)
- - [Networks](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#networks) -->
-
 
 ## Docker CLI basic commands
 
@@ -136,7 +135,7 @@ A Dockerfile provides instructions to build a container image while a Compose fi
 		$ docker network rm $(docker network ls -q)
 </details>
 
-[Docker CLI commands reference](https://docs.docker.com/reference/cli/docker/)
+[(Docker CLI commands reference)](https://docs.docker.com/reference/cli/docker/)
 
 ##
 ##
