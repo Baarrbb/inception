@@ -9,7 +9,15 @@ Docker provides the ability to package and run an application in an isolated env
 
 Docker is a tool that is used to automate the deployment of applications in lightweight containers so that applications can work efficiently in different environments in isolation.
 
+#
+
 ![Schema](./readme_img/Struct.png)
+
+#
+
+### Dockerfile
+Docker can build images automatically by reading the instructions from a Dockerfile.<br>
+A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image. It's a stand-alone executable. It contains all of the component required to run a piece of software, including code, librairies, environment variables ...
 
 
 ### Images
@@ -63,11 +71,6 @@ A Dockerfile provides instructions to build a container image while a Compose fi
 
 ##
 ##
-
-# Dockerfile
-Docker can build images automatically by reading the instructions from a Dockerfile.<br>
-A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image. It's a stand-alone executable. It contains all of the component required to run a piece of software, including code, librairies, environment variables ...
-
 
 # Services
 
