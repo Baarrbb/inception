@@ -5,7 +5,11 @@ Virtualize several Docker images and set up a small infrastructure composed of d
 
 
 ## Docker basics
-Docker provides the ability to package and run an application in an isolated environment called a container. Containers are lightweight and contain everything needed to run the application.
+Docker provides the ability to package and run an application in an isolated environment called a **container**. Containers are lightweight and contain everything needed to run the application.
+
+Docker is a tool that is used to automate the deployment of applications in lightweight containers so that applications can work efficiently in different environments in isolation.
+
+![Schema](./readme_img/Struct.png)
 
 
 ### Images
@@ -37,7 +41,7 @@ You don't always need to recreate everything from scratch. If you make a change,
 #### Dockerfile VS Compose file
 A Dockerfile provides instructions to build a container image while a Compose file defines your running containers. Quite often, a Compose file references a Dockerfile to build an image to use for a particular service.
 
-### [Basic command](./COMMAND.md)
+### [Basic commands](./COMMAND.md)
  - [Images](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#images)
  - [Containers](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#containers)
  - [Volumes](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#volumes)
@@ -47,15 +51,22 @@ A Dockerfile provides instructions to build a container image while a Compose fi
 ##
 ##
 
-### How Docker work
+#### How Docker work ?
 
-### How docker compose work
+#### How docker compose work ?
 
-### Difference between a Docker image used with docker compose and without
+#### Difference between a Docker image used with docker compose and without ?
 
-### Benefit of Docker compared to VM
+#### Benefit of Docker compared to VM ?
 
-### Pertinence of the directory structure
+#### Pertinence of the directory structure ?
+
+##
+##
+
+# Dockerfile
+Docker can build images automatically by reading the instructions from a Dockerfile.<br>
+A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image. It's a stand-alone executable. It contains all of the component required to run a piece of software, including code, librairies, environment variables ...
 
 
 # Services
