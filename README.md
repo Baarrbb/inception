@@ -3,7 +3,7 @@
 Broaden knowledge of system administration by using Docker.
 Virtualize several Docker images and set up a small infrastructure composed of different services. Each service has to run in a dedicated container.
 
-# Table of contents
+## Table of contents
  1. [Docker basics](#docker-basics)
 	- [Dockerfile](#dockerfile)
 	- [Images](#images)
@@ -37,6 +37,27 @@ A Dockerfile is a text document that contains instructions for generating a Dock
 It define the steps needed to create the image and run it. Each instruction create a layer in the image. That includes all the files, binaries, libraries, and configurations to run a container.
 
 It is the source code of the image.
+
+### Basic instructions
+
+ - **`FROM`** `<image>[:<tag>]`<br>
+It defines the base image. Docker applies the remaining instructions in your Dockerfile on top of the base image.<br>
+A valid Dockerfile must start with a `FROM` instruction. The image can be any valid image.
+
+- **`RUN`** `<command>`<br>
+Runs a command within the container. This can be any command available in the container's environment. This create a new layer on top of the current image.
+
+- **`COPY`** `<src> <dst>`<br>
+Copies new files or directories from `<src>` and add them to the filesystem of the container at the path `<dst>`.
+
+- **`EXPOSE`** `<port>`<br>
+Informs Docker that the container listens on the specified network ports at runtime. It doesn't actually publish the port. It functions as a type of documentation.
+
+- **`ENTRYPOINT`** `["executable", "param1", "param2"]`<br>
+Defines the program or script that will be executed when the containers starts.
+
+ - **`CMD`** <br>
+Sets the command to be executed when running a container from an image.
 
 [(Dockerfile reference)](https://docs.docker.com/reference/dockerfile/)
 
@@ -164,14 +185,21 @@ A Dockerfile provides instructions to build a container image while a Compose fi
 
 ![Schema](./readme_img/schema.png)
 
-## A Docker container that contains NGINX with TLSv1.2 or TLSv1.3 only
+The containers must be built either from the penultimate stable version of *Alpine* or *Debian*. 
+
+## NGINX with TLSv1.3
+
+Subject : A Docker container that contains NGINX with TLSv1.2 or TLSv1.3 only
 
 ### Dockerfile
 
 	FROM debian:stable
 
 	RUN apt update -y && apt install -y nginx openssl
-	RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/private.key -out /etc/ssl/certs/certificate.crt -subj "/C=/ST=/L=/O=/OU=/CN="
+	RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+		-keyout /etc/ssl/private/private.key \
+		-out /etc/ssl/certs/certificate.crt \
+		-subj "/C=/ST=/L=/O=/OU=/CN="
 
 	COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
@@ -179,25 +207,49 @@ A Dockerfile provides instructions to build a container image while a Compose fi
 
 	CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
 
-### RUN
+#### Install `nginx` and `openssl`
 
-**RUN** est utilise pour executer des commandes pendant la phase de build
+`apt update` : Update available packages.
 
-#### On install `nginx` et `openssl`
+`apt install nginx openssl` : Install *nginx*, a web server, and *openssl* to generate numeric certificates to securise communications with TLSv1.3.
 
-`apt update` -> pour mettre a jour les paquets disponibles.
+`-y` : Used to automatically answer 'yes' to all prompt during the execution of the command and avoid manually confirming each action.
 
-`apt install nginx openssl` -> pour installer nginx (requit par le sujet) et openssl pour generer des certificats numerique pour securise les communications.
+#### Generate certificates for TLS
 
-`-y` -> installation pas bloquante quand ca demande de confirmer que ca va installer tant de Mb sur la machine.
+TLS (Transport Layer Security) is a protocol designed to provide secure communication over networks. It is used to ensure privacy, data integrity and authentication between to communication applications.
 
+##
 
-#### On genere certificats pour protocole TLS
+ - Purposes of TLS :
 
-On genere ensuite les certificats dont on a besoin pour mettre en place le protocol TLS avec :<br>
+It encrypts the data between two parties, ensuring that it can't be read by anyone else. This protects sensitive information from being intercepted and understood by unauthorized entities.
+
+It ensures that the data sent and received has not been altered during transit. Any unauthorized modifications to the data will be detected.
+
+It allows the client to verify the identity of the server. It ensures the client is communicating with the intended server and not an imposter.
+
+ - How it works ?
+
+The initial process between the client and server exchange cryptographic keys and agree on the encryption methods to be used.
+
+The client and the server send messages to each other that contain information about the supported encryption algorithms and session keys.
+
+The server sends its digital certificate to prove its identity.
+
+A session key is generated and securely exchange  between the client and server, which will be used to encrypt the data during the session.
+
+Once the initial process is complet, all communication between the client and server is encrypted usinf the session key.
+
+##
+
+Generate certificates to use TLS protocol :
+
 `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/private.key -out /etc/ssl/certs/certificate.crt -subj "/C=/ST=/L=/O=/OU=/CN="`
 
-`req` -> requete de certificat<br>
+`openssl` is a cryptography toolkit implementing the TLS network protocol and related cryptography standards required.
+
+`req` : certificate signing request<br>
 `-x509` -> genere certificat auto signe<br>
 `-nodes` -> "No DES" ne pas chiffrer la cle prive avec un mdp<br>
 `-days 365` -> duree de validite du certificat<br>
@@ -206,12 +258,6 @@ On genere ensuite les certificats dont on a besoin pour mettre en place le proto
 `-out ` -> chemin ou enregistrer le certificat<br>
 `-subj "/C=/ST=/L=/O=/OU=/CN="` -> permet de specifier les informations relatives au certificat
 
-TLS
-: Transport Layer Security<br>
-Assure la confidentialité, l'intégrité et l'authenticité des données transmises entre un client et un serveur<br>
-
-SSL
-: Secure Socket Layer
 
 ### COPY
 On copie la configuration de nginx.<br>
