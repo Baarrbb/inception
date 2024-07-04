@@ -68,9 +68,12 @@ A Dockerfile provides instructions to build a container image while a Compose fi
  - [Volumes](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#volumes)
  - [Networks](https://github.com/Baarrbb/inception/blob/master/COMMAND.md#networks) -->
 
+
 ## Docker CLI basic commands
 
-### Images
+<details>
+<summary><strong>Images</strong></summary>
+
  - List images<br>
 
 		$ docker images
@@ -80,7 +83,11 @@ A Dockerfile provides instructions to build a container image while a Compose fi
  - Remove all images
 
 		$ docker rmi -f $(docker images -qa)
-### Containers
+</details>
+<br>
+<details>
+<summary><strong>Containers</strong></summary>
+
  - List containers
 
 		$ docker ps -a
@@ -96,10 +103,14 @@ A Dockerfile provides instructions to build a container image while a Compose fi
  - Remove all containers
 
 		$ docker rm $(docker ps -qa)
- - Exec cmd in a container
+ - Execute a command in a container
 
 		$ docker exec [ID] [cmd] [args]
-### Volumes
+</details>
+
+<details>
+<summary><strong>Volumes</strong></summary>
+
  - List volumes
 
 		$ docker volume ls
@@ -109,7 +120,10 @@ A Dockerfile provides instructions to build a container image while a Compose fi
  - Remove all volumes
 
 		$ docker volume rm $(docker volume ls -q)
-### Networks
+</details>
+
+<details>
+<summary><strong>Networks</strong></summary>
  - List networks
 
 		$ docker network ls
@@ -119,7 +133,7 @@ A Dockerfile provides instructions to build a container image while a Compose fi
  - Remove all networks
 
 		$ docker network rm $(docker network ls -q)
-
+</details>
 
 ##
 ##
