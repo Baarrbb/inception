@@ -13,9 +13,14 @@ Virtualize several Docker images and set up a small infrastructure composed of d
 	- [Questions](#questions)
  2. [Services](#services)
 	- [NGINX with TLSv1.3](#nginx-with-tlsv13)
-		- [Dockerfile](#dockerfile-1)
-		- [nginx.conf](#nginxconf)
-		- [Documentations](#-8)
+		<ul style="list-style-type:none;">
+		<li><a href="#dockerfile-1">Dockerfile</a></li>
+		<li><a href="#nginxconf">nginx.conf</a></li>
+		<li><a href="#documentations">Doc</a></li>
+		</ul>
+		<!-- * [Dockerfile](#dockerfile-1)
+		* [nginx.conf](#nginxconf)
+		* [Doc](#documentations) -->
 	- [WordPress + php-fpm](#)
 	- [MariaDB](#)
  3. [Volumes]()
@@ -377,22 +382,22 @@ This block defines the configuration for a server.
 `log_not_found off;` : 
 
 
-#
-<!-- #### Documentations Nginx & OpenSSL -->
+##
 
+### Documentations
 <details>
-<summary><strong>Documentation Nginx & OpenSSL</strong></summary>
+<summary><strong>Nginx</strong></summary>
 
- - [man openssl](https://linux.die.net/man/1/openssl)
- - [man openssl req](https://www.openssl.org/docs/man1.0.2/man1/openssl-req.html)
  - [nginx beginner's guide](https://nginx.org/en/docs/beginners_guide.html)
  - [nginx core](https://nginx.org/en/docs/ngx_core_module.html)
 </details>
+<details>
+<summary><strong>OpenSSL</strong></summary>
 
- <!-- - [man openssl](https://linux.die.net/man/1/openssl)
+ - [man openssl](https://linux.die.net/man/1/openssl)
  - [man openssl req](https://www.openssl.org/docs/man1.0.2/man1/openssl-req.html)
- - [nginx beginner's guide](https://nginx.org/en/docs/beginners_guide.html)
- - [nginx core](https://nginx.org/en/docs/ngx_core_module.html) -->
+</details>
+
 
 
 
