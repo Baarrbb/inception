@@ -13,6 +13,9 @@ Virtualize several Docker images and set up a small infrastructure composed of d
 	- [Questions](#questions)
  2. [Services](#services)
 	- [NGINX with TLSv1.3](#nginx-with-tlsv13)
+		- [Dockerfile](#dockerfile-1)
+		- [nginx.conf](#nginxconf)
+		- [Documentations](#-8)
 	- [WordPress + php-fpm](#)
 	- [MariaDB](#)
  3. [Volumes]()
@@ -373,9 +376,26 @@ This block defines the configuration for a server.
 
 `log_not_found off;` : 
 
-<br>
-<br>
-<br>
+
+#
+<!-- #### Documentations Nginx & OpenSSL -->
+
+<details>
+<summary><strong>Documentation Nginx & OpenSSL</strong></summary>
+
+ - [man openssl](https://linux.die.net/man/1/openssl)
+ - [man openssl req](https://www.openssl.org/docs/man1.0.2/man1/openssl-req.html)
+ - [nginx beginner's guide](https://nginx.org/en/docs/beginners_guide.html)
+ - [nginx core](https://nginx.org/en/docs/ngx_core_module.html)
+</details>
+
+ <!-- - [man openssl](https://linux.die.net/man/1/openssl)
+ - [man openssl req](https://www.openssl.org/docs/man1.0.2/man1/openssl-req.html)
+ - [nginx beginner's guide](https://nginx.org/en/docs/beginners_guide.html)
+ - [nginx core](https://nginx.org/en/docs/ngx_core_module.html) -->
+
+
+
 
 
 
