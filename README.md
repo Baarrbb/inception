@@ -3,7 +3,7 @@
 Broaden knowledge of system administration by using Docker.
 Virtualize several Docker images and set up a small infrastructure composed of different services. Each service has to run in a dedicated container.
 
-## Table of contents
+## <a name="top">Table of contents</a>
  1. [Docker basics](#docker-basics)
 	- [Dockerfile](#dockerfile)
 	- [Images](#images)
@@ -18,14 +18,23 @@ Virtualize several Docker images and set up a small infrastructure composed of d
 		<li><a href="#nginxconf">nginx.conf</a></li>
 		<li><a href="#documentations">Doc</a></li>
 		</ul>
-		<!-- * [Dockerfile](#dockerfile-1)
-		* [nginx.conf](#nginxconf)
-		* [Doc](#documentations) -->
-	- [WordPress + php-fpm](#)
-	- [MariaDB](#)
- 3. [Volumes]()
-	- [WordPress database]()
-	- [WordPress website files]()
+	- [WordPress + php-fpm](#wordpress--php-fpm)
+		<ul style="list-style-type:none;">
+		<li><a href="#dockerfile-2">Dockerfile</a></li>
+		<li><a href="#phpconf">php.conf</a></li>
+		<li><a href="#script">script</a></li>
+		<li><a href="#documentations-1">Doc</a></li>
+		</ul>
+	- [MariaDB](#mariadb)
+		<ul style="list-style-type:none;">
+		<li><a href="#dockerfile-3">Dockerfile</a></li>
+		<li><a href="">db.conf</a></li>
+		<li><a href="">script</a></li>
+		<li><a href="#documentations-2">Doc</a></li>
+		</ul>
+ 3. [Volumes](#volumes)
+	- [WordPress database](#wordpress-database)
+	- [WordPress website files](#wordpress-website-files)
 4. [Docker Compose]()
 5. [Docker network]()
 6. [Makefile]()
@@ -204,6 +213,8 @@ The containers must be built either from the penultimate stable version of *Alpi
 
 Subject : A Docker container that contains NGINX with TLSv1.2 or TLSv1.3 only
 
+---
+
 ### Dockerfile
 
 	FROM debian:stable
@@ -298,6 +309,11 @@ As the process must run in the foreground :
 `-g` : set global configuration directives<br>
 `"daemon off;"` : option which tells to Nginx to run in foreground
 
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
+
+---
+
 ### nginx.conf
 
 	events {
@@ -339,12 +355,12 @@ This block configure how Nginx handles connections.
 
 `worker_connections` : sets maximum number of simultaneous connections that each worker process can handle.
 
-------
+<!-- ------
 
 voir cb de worker_processes par defaut<br>
 worker_processes par default = 1 ?
 
-------
+------ -->
 
 
 #### `http`
@@ -381,8 +397,10 @@ This block defines the configuration for a server.
 
 `log_not_found off;` : 
 
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
 
-##
+---
 
 ### Documentations
 <details>
@@ -398,9 +416,8 @@ This block defines the configuration for a server.
  - [man openssl req](https://www.openssl.org/docs/man1.0.2/man1/openssl-req.html)
 </details>
 
-
-
-
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
 
 
 
@@ -454,27 +471,233 @@ On peut verifier que les connexion en http (port 80) ne sont pas autorise avec :
 
 
 
-## A Docker container that contains WordPress + php-fpm only
+## WordPress + php-fpm
 
-(it must be installed and configured)<br>
-Without nginx
+Subject : A Docker container that contains WordPress (it must be installed and configured) and php-fpm only without nginx.
 
-## A Docker container that contains MariaDB only
+### Dockerfile
+	
+	FROM debian:stable
 
-Without nginx
+	RUN apt update -y && apt install -y php-fpm curl php-mysql
 
-##
+	COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 
-### A volume that contains your WordPress database
+	COPY ./tools/entry.sh /entry.sh
+	RUN chmod +x /entry.sh
 
-### A volume that contains your WordPress website files
+	EXPOSE 9000
 
-### A **docker network** that establishes the connection between containers.
+	ENTRYPOINT ["./entry.sh"]
 
-##
-
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
+
+---
+
+### php.conf
+
+	[www]
+	user = www-data
+	group = www-data
+	listen = 0.0.0.0:9000
+	listen.owner = www-data
+	listen.group = www-data
+	pm = dynamic
+	pm.max_children = 5
+	pm.start_servers = 2
+	pm.min_spare_servers = 1
+	pm.max_spare_servers = 3
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
+
+---
+
+
+### Script
+
+	#!/bin/sh
+
+	path=/var/www/html
+
+	curl -s -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+	chmod +x wp-cli.phar
+	mv wp-cli.phar /usr/local/bin/wp
+
+	rm -f $path/index.nginx-debian.html
+
+	if [ ! "$(ls -A  $path)" ]; then
+
+		wp core download --allow-root --path=$path --quiet
+
+		cd $path
+		wp config create --allow-root --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWD --dbhost=$WP_HOST_DB --quiet
+
+		wp core install --allow-root --path=$path --url=$DOMAIN_NAME --title="Inception" --admin_user=$WP_ADMIN --admin_password=$WP_ADMIN_PASSWD --admin_email=$WP_ADMIN_EMAIL
+
+		wp user create --allow-root --path=$path $WP_USER $WP_EMAIL --user_pass=$WP_PASSWD --role=$WP_USER_ROLE --quiet
+
+	fi
+
+	php-fpm8.2 -F -y /etc/php/8.2/fpm/php-fpm.conf
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
+
+---
+
+
+### Documentations
+
+<details>
+<summary><strong>Wordpress</strong></summary>
+
+ - [WP-CLI How to install](https://make.wordpress.org/cli/handbook/how-to/how-to-install/)
+ - [WP-CLI user create](https://developer.wordpress.org/cli/commands/user/create/)
+ - [WP-CLI commands](https://developer.wordpress.org/cli/commands/)
+</details>
+
+<details>
+<summary><strong>PHP-FPM</strong></summary>
+
+ - [FPM conf](https://www.php.net/manual/en/install.fpm.configuration.php)
+</details>
+
+
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
+
+## MariaDB
+
+Subject : A Docker container that contains MariaDB only without nginx.
+
+### Dockerfile
+
+
+	FROM debian:stable
+
+	RUN apt update -y && apt install -y mariadb-server
+
+	RUN mkdir -p /var/log/mariadb
+	RUN chown -R mysql /var/log/mariadb
+	RUN mkdir -p /run/mysqld
+	RUN chown -R mysql /run/mysqld
+
+	COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+
+	COPY ./tools/setup_db.sh /
+	RUN chmod +x setup_db.sh
+
+	EXPOSE 3306
+
+	ENTRYPOINT ["./setup_db.sh"]
+
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
+
+---
+
+### db.conf
+
+	[server]
+
+	[mysqld]
+
+	log_warnings			= 0
+	log_error				= /var/log/mariadb/mariadb.log
+
+	innodb_use_native_aio	= OFF
+
+	user					= mysql
+	pid-file				= /run/mysqld/mysqld.pid
+	socket					= /run/mysqld/mysqld.sock
+	port					= 3306
+	basedir					= /usr
+	datadir					= /var/lib/mysql
+
+	bind-address			= 0.0.0.0
+
+
+	character-set-server	= utf8mb4
+	collation-server		= utf8mb4_general_ci
+
+	[embedded]
+
+	[mariadb]
+
+	[mariadb-10.11]
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
+
+---
+
+### Script
+
+	#!/bin/sh
+
+	mysqld &
+
+	sleep 2
+
+	echo "CREATE DATABASE $DB_NAME;" | mysql
+	echo "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD';" | mysql
+	echo "GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD' WITH GRANT OPTION;" | mysql
+	echo "GRANT ALL ON $DB_NAME.* TO 'root'@'%' IDENTIFIED BY '$DB_ROOT_PASSWD' WITH GRANT OPTION;" | mysql
+	echo "FLUSH PRIVILEGES;" | mysql
+
+	mysqladmin shutdown
+
+	mysqld_safe
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
+
+---
+
+### Documentations
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
 
 
+## Volumes
 
+### Wordpress database
+
+Subject : A volume that contains your WordPress database
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
+
+---
+
+### Wordpress website files
+
+Subject : A volume that contains your WordPress website files.
+
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
+
+## Docker compose
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
+
+## Docker network
+
+Subject : A **docker network** that establishes the connection between containers.
+
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
+
+## Makefile
+
+
+<a href="#top"><img src="./readme_img/top.png" align="right"></a>
+<br>
