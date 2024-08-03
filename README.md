@@ -492,6 +492,41 @@ Subject : A Docker container that contains WordPress (it must be installed and c
 
 	ENTRYPOINT ["./entry.sh"]
 
+#### Base image
+
+Secifies the base image for the Docker container.
+
+#### Install `php-fpm`, `curl` and `php-mysql`
+
+`apt update` : Update available packages.
+
+`apt install php-fpm` : Install *php-fpm* (PHP FastCGI Process Manager), used to execute PHP scripts on a web server.
+
+##
+
+**php-fpm** is designed to efficiently handle many simultaneous requests.<br>
+This is a variant of PHP that will run in the background as a daemon, listening for CGI requests.
+
+**FastCGI** is a protocol allowing communication between a web server and an external programs.
+
+##
+
+`curl` : 
+
+`php-mysql` : 
+
+`-y` : Used to automatically answer 'yes' to all prompt during the execution of the command and avoid manually confirming each action.
+
+#### Copying php configuration file
+
+#### Copying script
+
+#### Set the script executable
+
+#### Port 9000
+
+#### Start the script
+
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
 
