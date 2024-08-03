@@ -335,7 +335,6 @@ As the process must run in the foreground :
 				fastcgi_index index.php;
 				include fastcgi_params;
 				fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;
-				fastcgi_param PATH_INFO $fastcgi_path_info;
 			}
 
 			location / {
@@ -390,16 +389,15 @@ This block defines the configuration for a server.
 
 `fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;` : sets the `SCRIPT_FILENAME` parameter to tell FastCGI where the PHP scripts are located. `$fastcgi_script_name` is a built-in variable used in FastCGI configurations, it contains the script name requested by the client.
 
-`fastcgi_param PATH_INFO $fastcgi_path_info;` : sets the `PATH_INFO` parameter, this parameter provides additional path information to the script being executed. `$fastcgi_path_info` this variable usually holds the part of the URL path that follows the script name.
+`location / {}` : this block is necessary to serve static content (like images, CSS and javascript files). It also handles directory indexing, serving the default index file.
 
-`location / {}` :
+`root /usr/share/nginx/html;` : sets the root directory for serving files. This mean that any request to the server will look for files in this directory.
 
-`root /usr/share/nginx/html;` : <br>
-`index index.html. index.htm;` : <br>
+`index index.html. index.htm;` : specifies the default file to serve.
 
-`location = /favicon.ico {}` :
+`location = /favicon.ico {}` : this block is used to handle request for the favicon.ico file.
 
-`log_not_found off;` : 
+`log_not_found off;` : it tells to NGINX to not log an error if the favicon.ico file is not found.
 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
