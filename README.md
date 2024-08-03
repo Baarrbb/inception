@@ -382,11 +382,15 @@ This block defines the configuration for a server.
 
 `location ~ \.php$ {}` : this block defines how to process PHP files.
 
-`fastcgi_pass wordpress:9000;` : sets the FastCGI server to handle PHP requests.<br>
-`fastcgi_index index.php;` : specifies the default file to be served.<br>
-`include fastcgi_params;` : includes the defaults FastCGI parameters provided by Nginx.<br>
-`fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;` : sets the `SCRIPT_FILENAME` parameter to tell FastCGI where the PHP scripts are located.<br>
-`fastcgi_param PATH_INFO $fastcgi_path_info;` : <br>
+`fastcgi_pass wordpress:9000;` : sets the FastCGI server to handle PHP requests.
+
+`fastcgi_index index.php;` : specifies the default file to be served.
+
+`include fastcgi_params;` : includes the defaults FastCGI parameters provided by Nginx.
+
+`fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;` : sets the `SCRIPT_FILENAME` parameter to tell FastCGI where the PHP scripts are located. `$fastcgi_script_name` is a built-in variable used in FastCGI configurations, it contains the script name requested by the client.
+
+`fastcgi_param PATH_INFO $fastcgi_path_info;` : sets the `PATH_INFO` parameter, this parameter provides additional path information to the script being executed. `$fastcgi_path_info` this variable usually holds the part of the URL path that follows the script name.
 
 `location / {}` :
 
