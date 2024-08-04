@@ -390,7 +390,7 @@ This block defines the configuration for a server.
 
 `fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;` : sets the `SCRIPT_FILENAME` parameter to tell FastCGI where the PHP scripts are located. `$fastcgi_script_name` is a built-in variable used in FastCGI configurations, it contains the script name requested by the client.
 
-<!-- AJOUTER PATH_INFOOOOO -->
+`fastcgi_param PATH_INFO $fastcgi_path_info` : sets the `PATH_INFO` parameter with extra path information following the script name but preceding the query string. `$fastcgi_path_info` contains the part of the URL path that follows the script name.
 
 **`location / {}`** : this block is necessary to serve static content (like images, CSS and javascript files). It also handles directory indexing, serving the default index file.
 
@@ -581,7 +581,11 @@ This file defines various settings for the PHP-FPM. It is based on the default f
 
 Start of a pool configuration section named `www`.
 
-<!-- what is a pool and why www -->
+##
+
+A **pool** is a group of PHP processes that share the same configuration and are managed together. Each pool can have its own specific configuration, allowing to manage different PHP applications with different requirements on the same server.
+
+##
 
 `user = www-data` : specifies the user under which the php-fpm processes will run.
 
@@ -633,6 +637,37 @@ Start of a pool configuration section named `www`.
 	fi
 
 	php-fpm8.2 -F -y /etc/php/8.2/fpm/php-fpm.conf
+
+
+**`curl -s -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar`**
+
+`curl` : get data from the following URL.
+
+`-s` : silent option.
+
+`-O` : save that data into a local file.
+
+`https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar` : URL of the WP-CLI Phar file from the official repository.
+
+## 
+
+A **Phar** file (**PH**P **Ar**chive) is an archive format for storing PHP packages that can be manipulated without decompression.
+
+**WP-CLI** is the command-line interface for WordPress.
+
+##
+
+`chmod +x wp-cli.phar` : makes the downloaded file executable.
+
+`mv wp-cli.phar /usr/local/bin/wp` : moves the executable to `usr/local/bin/wp` so it can be run from anywhere.
+
+`rm -f $path/index.nginx-debian.html` : deletes the default NGINX index page if it exists.
+
+**`if [ ! "$(ls -A  $path)" ]; then`** 
+
+Checks if the directory `/var/www/html` is empty. If it is empty, the following commands are executed. If it's not it means that the Wordpress is already set, it is possible because we have a persisting volume.
+
+
 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
