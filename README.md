@@ -290,7 +290,7 @@ Generate certificates to use TLS protocol :
 #### Copying nginx configuration file
 
 From local file in `./conf/nginx.conf`<br>
-to `/etc/nginx/nginx.conf` in the container, which is the default path for nginx configuration files.
+to `/etc/nginx/nginx.conf` in the container, which is the default path for **nginx** configuration files.
 
 [nginx.conf details](#nginxconf)
 
@@ -379,7 +379,7 @@ This block defines the configuration for a server.
 
 `ssl_protocols TLSv1.3;` : specifies the SSL/TLS protocols to use.
 
-`location ~ \.php$ {}` : this block defines how to process PHP files.
+**`location ~ \.php$ {}`** : this block defines how to process PHP files.
 
 `fastcgi_pass wordpress:9000;` : sets the FastCGI server to handle PHP requests.
 
@@ -389,13 +389,13 @@ This block defines the configuration for a server.
 
 `fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;` : sets the `SCRIPT_FILENAME` parameter to tell FastCGI where the PHP scripts are located. `$fastcgi_script_name` is a built-in variable used in FastCGI configurations, it contains the script name requested by the client.
 
-`location / {}` : this block is necessary to serve static content (like images, CSS and javascript files). It also handles directory indexing, serving the default index file.
+**`location / {}`** : this block is necessary to serve static content (like images, CSS and javascript files). It also handles directory indexing, serving the default index file.
 
 `root /usr/share/nginx/html;` : sets the root directory for serving files. This mean that any request to the server will look for files in this directory.
 
 `index index.html. index.htm;` : specifies the default file to serve.
 
-`location = /favicon.ico {}` : this block is used to handle request for the favicon.ico file.
+**`location = /favicon.ico {}`** : this block is used to handle request for the favicon.ico file.
 
 `log_not_found off;` : it tells to NGINX to not log an error if the favicon.ico file is not found.
 
@@ -511,21 +511,47 @@ This is a variant of PHP that will run in the background as a daemon, listening 
 
 ##
 
-`curl` : 
+`curl` : Install *curl*, a  tool for transferring data from or to a server.
 
-`php-mysql` : 
+`php-mysql` : Install *php-mysql*, it is a PHP extension that allows PHP scripts to interact with MySQL databases.
+
+##
+
+We need **php-mysql** because Wordpress uses MySQL database to stock all the data, articles, pages, users etc. Without, Wordpress could not connect to the database and work properly.
+
+##
 
 `-y` : Used to automatically answer 'yes' to all prompt during the execution of the command and avoid manually confirming each action.
 
 #### Copying php configuration file
 
+From local file in `./conf/www.conf`<br>
+to `/etc/php/8.2/fpm/pool.d/www.conf` in the container, which is the default path for **php-fpm** configuration files.
+
+[php.conf details](#phpconf)
+
 #### Copying script
 
-#### Set the script executable
+From local file in `./tools/entry.sh`<br>
+to `/entry.sh` at the root of the container.
+
+[script entry.sh details](#script)
+
+#### Make the script executable
+
+`chmod +x /entry.sh` in the container to make the script executable.
 
 #### Port 9000
 
-#### Start the script
+Documentation on which port need to be expose.<br>
+`9000` is generally the default port for php-fpm to listen at the server requests.
+
+#### Entrypoint
+
+When the container starts, it executes `entry.sh`.
+
+[script entry.sh details](#script)
+
 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
@@ -545,6 +571,36 @@ This is a variant of PHP that will run in the background as a daemon, listening 
 	pm.start_servers = 2
 	pm.min_spare_servers = 1
 	pm.max_spare_servers = 3
+
+This file defines various settings for the PHP-FPM.
+
+#### `[www]`
+
+Start of a pool configuration section named `www`.
+
+<!-- what is a pool and why www -->
+
+`user = www-data` :
+
+`group = www-data` :
+
+`listen = 0.0.0.0:9000` :
+
+`listen.owner = www-data` :
+
+`listen.group = www-data` :
+
+`pm = dynamic` :
+
+`pm.max_children = 5` :
+
+`pm.start_servers = 2` :
+
+`pm.min_spare_servers = 1` : 
+
+`pm.max_spare_servers = 3` :
+
+
 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
@@ -598,7 +654,14 @@ This is a variant of PHP that will run in the background as a daemon, listening 
 <details>
 <summary><strong>PHP-FPM</strong></summary>
 
+ - [man php-fpm](https://linux.die.net/man/8/php-fpm)
  - [FPM conf](https://www.php.net/manual/en/install.fpm.configuration.php)
+</details>
+
+<details>
+<summary><strong>Others</strong></summary>
+
+ - [man curl](https://www.man7.org/linux/man-pages/man1/curl.1.html)
 </details>
 
 
