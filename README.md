@@ -667,6 +667,17 @@ A **Phar** file (**PH**P **Ar**chive) is an archive format for storing PHP packa
 
 Checks if the directory `/var/www/html` is empty. If it is empty, the following commands are executed. If it's not it means that the Wordpress is already set, it is possible because we have a persisting volume.
 
+`wp core download --allow-root --path=$path --quiet` : downloads the WordPress core files into the specified directory (`/var/www/html`) and allow downloads from root user.
+
+`wp config create --allow-root --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWD --dbhost=$WP_HOST_DB --quiet` : generates the cp-config.php with the specified database credentials.
+
+`wp core install --allow-root --path=$path --url=$DOMAIN_NAME --title="Inception" --admin_user=$WP_ADMIN --admin_password=$WP_ADMIN_PASSWD --admin_email=$WP_ADMIN_EMAIL` : installs WordPress with the specified site URL, title and admin user credentials.
+
+`wp user create --allow-root --path=$path $WP_USER $WP_EMAIL --user_pass=$WP_PASSWD --role=$WP_USER_ROLE --quiet` : creates an additional WordPress user with the specified username, email, password and role.
+
+**`fi`**
+
+`php-fpm8.2 -F -y /etc/php/8.2/fpm/php-fpm.conf` : starts *php-fpm*, `-y` using the configuration file located at `/etc/php/8.2/fpm/php-fpm.conf`, `-F` force to stay in foreground and ignore daemonize option from configuration file. 
 
 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
