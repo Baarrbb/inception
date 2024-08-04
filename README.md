@@ -335,6 +335,7 @@ As the process must run in the foreground :
 				fastcgi_index index.php;
 				include fastcgi_params;
 				fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;
+				fastcgi_param PATH_INFO $fastcgi_path_info;
 			}
 
 			location / {
@@ -388,6 +389,8 @@ This block defines the configuration for a server.
 `include fastcgi_params;` : includes the defaults FastCGI parameters provided by Nginx.
 
 `fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;` : sets the `SCRIPT_FILENAME` parameter to tell FastCGI where the PHP scripts are located. `$fastcgi_script_name` is a built-in variable used in FastCGI configurations, it contains the script name requested by the client.
+
+<!-- AJOUTER PATH_INFOOOOO -->
 
 **`location / {}`** : this block is necessary to serve static content (like images, CSS and javascript files). It also handles directory indexing, serving the default index file.
 
@@ -564,15 +567,15 @@ When the container starts, it executes `entry.sh`.
 	user = www-data
 	group = www-data
 	listen = 0.0.0.0:9000
-	listen.owner = www-data
-	listen.group = www-data
 	pm = dynamic
 	pm.max_children = 5
 	pm.start_servers = 2
 	pm.min_spare_servers = 1
 	pm.max_spare_servers = 3
 
-This file defines various settings for the PHP-FPM.
+This file defines various settings for the PHP-FPM. It is based on the default file provided by php-fpm ([default file](./readme_img/www.conf)) with little modifications : 
+ - we remove the line `listen = /run/php/php8.1-fpm.sock` because Unix sockets are mainly used for local communication on the same machine. Between containers, a network connection is more suitable.
+ - we replace the line above by `listen = 0.0.0.0:9000` to listen on all network interfaces on port 9000.
 
 #### `[www]`
 
@@ -580,25 +583,21 @@ Start of a pool configuration section named `www`.
 
 <!-- what is a pool and why www -->
 
-`user = www-data` :
+`user = www-data` : specifies the user under which the php-fpm processes will run.
 
-`group = www-data` :
+`group = www-data` : specifies the group under which the php-fpm processes will run.
 
-`listen = 0.0.0.0:9000` :
+`listen = 0.0.0.0:9000` : Defines the IP address and port on which php-fpm will listen for incoming FastCGI requests. It will listen on all network interfaces on port 9000, the one used to communicate between our *wordpress* container and *nginx* container.
 
-`listen.owner = www-data` :
+`pm = dynamic` : specifies the process manager type. `dynamic` means php-fpm will manage the number of child processes dynamically based on the following settings. With this process management, there will be always at least 1 children.
 
-`listen.group = www-data` :
+`pm.max_children = 5` : sets the maximum number of children that can be alive at the same time. This limits the total number of concurrent requests that can be handled.
 
-`pm = dynamic` :
+`pm.start_servers = 2` : specifies the number of child processes created on startup.
 
-`pm.max_children = 5` :
+`pm.min_spare_servers = 1` : defines the minimum number of idle child processes. If the number of idle processes is less than this number then some children will be created.
 
-`pm.start_servers = 2` :
-
-`pm.min_spare_servers = 1` : 
-
-`pm.max_spare_servers = 3` :
+`pm.max_spare_servers = 3` : defines the maximum number of idle child processes. If the number of idle processes exceeds this value, php-fpm will terminate some of the idle processes.
 
 
 
