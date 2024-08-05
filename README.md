@@ -267,7 +267,7 @@ The server sends its digital certificate to prove its identity.
 
 A session key is generated and securely exchange  between the client and server, which will be used to encrypt the data during the session.
 
-Once the initial process is complet, all communication between the client and server is encrypted usinf the session key.
+Once the initial process is complet, all communication between the client and server is encrypted using the session key.
 
 ##
 
@@ -375,7 +375,8 @@ This block defines the configuration for a server.
 
 `server_name login.42.fr;` : specifies the server's domain name.
 
-`ssl_certificate /etc/ssl/certs/certificate.crt;` : specifies the path to the ssl certificate file.<br>
+`ssl_certificate /etc/ssl/certs/certificate.crt;` : specifies the path to the ssl certificate file.
+
 `ssl_certificate_key /etc/ssl/private/private.key;`: specifies the path to the ssl certificate's private key file.
 
 `ssl_protocols TLSv1.3;` : specifies the SSL/TLS protocols to use.
@@ -394,9 +395,9 @@ This block defines the configuration for a server.
 
 **`location / {}`** : this block is necessary to serve static content (like images, CSS and javascript files). It also handles directory indexing, serving the default index file.
 
-`root /usr/share/nginx/html;` : sets the root directory for serving files. This mean that any request to the server will look for files in this directory.
+`root /var/www/html;` : sets the root directory for serving files. This mean that any request to the server will look for files in this directory.
 
-`index index.html. index.htm;` : specifies the default file to serve.
+`index index.php;` : specifies the default file to serve.
 
 **`location = /favicon.ico {}`** : this block is used to handle request for the favicon.ico file.
 
@@ -497,7 +498,7 @@ Subject : A Docker container that contains WordPress (it must be installed and c
 
 #### Base image
 
-Secifies the base image for the Docker container.
+Specifies the base image for the Docker container.
 
 #### Install `php-fpm`, `curl` and `php-mysql`
 
@@ -573,8 +574,8 @@ When the container starts, it executes `entry.sh`.
 	pm.min_spare_servers = 1
 	pm.max_spare_servers = 3
 
-This file defines various settings for the PHP-FPM. It is based on the default file provided by php-fpm ([default file](./readme_img/www.conf)) with little modifications : 
- - we remove the line `listen = /run/php/php8.1-fpm.sock` because Unix sockets are mainly used for local communication on the same machine. Between containers, a network connection is more suitable.
+This file defines various settings for *php-fpm*. It is based on the default file provided by php-fpm ([see default file](./readme_img/www.conf)) with little modifications : 
+ - we remove the line 36 `listen = /run/php/php8.1-fpm.sock` because Unix sockets are mainly used for local communication on the same machine. Between containers, a network connection is more suitable.
  - we replace the line above by `listen = 0.0.0.0:9000` to listen on all network interfaces on port 9000.
 
 #### `[www]`
@@ -593,7 +594,7 @@ A **pool** is a group of PHP processes that share the same configuration and are
 
 `listen = 0.0.0.0:9000` : Defines the IP address and port on which php-fpm will listen for incoming FastCGI requests. It will listen on all network interfaces on port 9000, the one used to communicate between our *wordpress* container and *nginx* container.
 
-`pm = dynamic` : specifies the process manager type. `dynamic` means php-fpm will manage the number of child processes dynamically based on the following settings. With this process management, there will be always at least 1 children.
+`pm = dynamic` : specifies the process manager type. `dynamic` means php-fpm will manage the number of child processes dynamically based on the following settings. With this process management, there will be always at least 1 child.
 
 `pm.max_children = 5` : sets the maximum number of children that can be alive at the same time. This limits the total number of concurrent requests that can be handled.
 
@@ -639,21 +640,22 @@ A **pool** is a group of PHP processes that share the same configuration and are
 	php-fpm8.2 -F -y /etc/php/8.2/fpm/php-fpm.conf
 
 
-**`curl -s -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar`**
+This script starts running at the start up of the container. His main purpose is to create the database for WordPress from the WP-CLI and start php-fpm in the foreground.
 
-`curl` : get data from the following URL.
+`path=/var/www/html` : WordPress container and NGINX container share a persisting volume which is located at `/var/www/html`.
 
-`-s` : silent option.
+`curl -s -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar`
 
-`-O` : save that data into a local file.
-
+`curl` : get data from the following URL.<br>
+`-s` : silent option. <br>
+`-O` : save that data into a local file. <br>
 `https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar` : URL of the WP-CLI Phar file from the official repository.
 
 ## 
 
 A **Phar** file (**PH**P **Ar**chive) is an archive format for storing PHP packages that can be manipulated without decompression.
 
-**WP-CLI** is the command-line interface for WordPress.
+**WP-CLI** is the command-line interface for WordPress. WP-CLI provides a command-line interface for many actions you might perform in the WordPress admin.
 
 ##
 
@@ -665,11 +667,11 @@ A **Phar** file (**PH**P **Ar**chive) is an archive format for storing PHP packa
 
 **`if [ ! "$(ls -A  $path)" ]; then`** 
 
-Checks if the directory `/var/www/html` is empty. If it is empty, the following commands are executed. If it's not it means that the Wordpress is already set, it is possible because we have a persisting volume.
+Checks if the directory `/var/www/html` is empty. If it is empty, the following commands are executed. If it's not it means that the Wordpress is already set up, it is possible because we have a persisting volume.
 
-`wp core download --allow-root --path=$path --quiet` : downloads the WordPress core files into the specified directory (`/var/www/html`) and allow downloads from root user.
+`wp core download --allow-root --path=$path --quiet` : downloads the latest WordPress version into the specified directory (`/var/www/html`) and allow downloads from root user. 
 
-`wp config create --allow-root --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWD --dbhost=$WP_HOST_DB --quiet` : generates the cp-config.php with the specified database credentials.
+`wp config create --allow-root --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWD --dbhost=$WP_HOST_DB --quiet` : generates the configuration file `wp-config.php` and set up the database credentials for our installation.
 
 `wp core install --allow-root --path=$path --url=$DOMAIN_NAME --title="Inception" --admin_user=$WP_ADMIN --admin_password=$WP_ADMIN_PASSWD --admin_email=$WP_ADMIN_EMAIL` : installs WordPress with the specified site URL, title and admin user credentials.
 
@@ -677,7 +679,7 @@ Checks if the directory `/var/www/html` is empty. If it is empty, the following 
 
 **`fi`**
 
-`php-fpm8.2 -F -y /etc/php/8.2/fpm/php-fpm.conf` : starts *php-fpm*, `-y` using the configuration file located at `/etc/php/8.2/fpm/php-fpm.conf`, `-F` force to stay in foreground and ignore daemonize option from configuration file. 
+`php-fpm8.2 -F -y /etc/php/8.2/fpm/php-fpm.conf` : starts *php-fpm*, `-y` using the configuration file located at `/etc/php/8.2/fpm/php-fpm.conf`, `-F` force to stay in foreground and ignore daemonize option from configuration file (`/etc/php/8.2/fpm/php-fpm.conf`).
 
 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
@@ -714,6 +716,14 @@ Checks if the directory `/var/www/html` is empty. If it is empty, the following 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
 
+
+<!-- 
+
+			MARIADB
+
+ -->
+
+
 ## MariaDB
 
 Subject : A Docker container that contains MariaDB only without nginx.
@@ -738,6 +748,34 @@ Subject : A Docker container that contains MariaDB only without nginx.
 	EXPOSE 3306
 
 	ENTRYPOINT ["./setup_db.sh"]
+
+#### Base image
+
+Specifies the base image for the Docker container.
+
+#### Install `mariadb-server`
+
+`apt update` : Update available packages.
+
+`apt install mariadb-server` : Install *mariadb-server*, a database management system, allowing to create, manage and interact with databases.
+
+#### Create and change ownership
+
+`mkdir -p /var/log/mariadb` : Creates directory for MariaDB logs.
+
+`chown -R mysql /var/log/mariadb` : Changes the ownership of the log directory to the `mysql` user.
+
+`mkdir -p /run/mysqld` : 
+
+`chown -R mysql /run/mysld` : 
+
+#### Copying mariadb configuration
+
+#### Copying script and make it executable
+
+#### Port 3306
+
+#### Entrypoint
 
 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
