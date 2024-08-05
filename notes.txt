@@ -44,3 +44,28 @@ collation-server		= utf8mb4_general_ci
 [mariadb]
 
 [mariadb-10.11]
+
+
+
+new 50-server.cnf :
+
+[server]
+
+[mysqld]
+
+pid-file                = /run/mysqld/mysqld.pid
+basedir                 = /usr
+
+bind-address            = 0.0.0.0
+
+expire_logs_days        = 10
+
+character-set-server  = utf8mb4
+collation-server      = utf8mb4_general_ci
+
+[embedded]
+
+[mariadb]
+
+[mariadb-10.11]
+

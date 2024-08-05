@@ -28,8 +28,7 @@ Virtualize several Docker images and set up a small infrastructure composed of d
 	- [MariaDB](#mariadb)
 		<ul style="list-style-type:none;">
 		<li><a href="#dockerfile-3">Dockerfile</a></li>
-		<li><a href="">db.conf</a></li>
-		<li><a href="">script</a></li>
+		<li><a href="#script-1">script</a></li>
 		<li><a href="#documentations-2">Doc</a></li>
 		</ul>
  3. [Volumes](#volumes)
@@ -735,13 +734,6 @@ Subject : A Docker container that contains MariaDB only without nginx.
 
 	RUN apt update -y && apt install -y mariadb-server
 
-	RUN mkdir -p /var/log/mariadb
-	RUN chown -R mysql /var/log/mariadb
-	RUN mkdir -p /run/mysqld
-	RUN chown -R mysql /run/mysqld
-
-	COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
-
 	COPY ./tools/setup_db.sh /
 	RUN chmod +x setup_db.sh
 
@@ -759,59 +751,25 @@ Specifies the base image for the Docker container.
 
 `apt install mariadb-server` : Install *mariadb-server*, a database management system, allowing to create, manage and interact with databases.
 
-#### Create and change ownership
-
-`mkdir -p /var/log/mariadb` : Creates directory for MariaDB logs.
-
-`chown -R mysql /var/log/mariadb` : Changes the ownership of the log directory to the `mysql` user.
-
-`mkdir -p /run/mysqld` : 
-
-`chown -R mysql /run/mysld` : 
-
-#### Copying mariadb configuration
-
 #### Copying script and make it executable
+
+From local file in `./tools/setup_db.sh`<br>
+to `/setup_db.sh` at the root of the container.
+
+`chmod +x setup_db.sh` : make the script executable in the container.
+
+[script setup_db.sh details](#script-1)
 
 #### Port 3306
 
+Documentation on which port need to be expose.<br>
+`3306` is generally the default port for MariaDB.
+
 #### Entrypoint
 
+When the container starts, it executes `setup_db.sh`.
 
-<a href="#top"><img src="./readme_img/top.png" align="right"></a>
-<br>
-
----
-
-### db.conf
-
-	[server]
-
-	[mysqld]
-
-	log_warnings			= 0
-	log_error				= /var/log/mariadb/mariadb.log
-
-	innodb_use_native_aio	= OFF
-
-	user					= mysql
-	pid-file				= /run/mysqld/mysqld.pid
-	socket					= /run/mysqld/mysqld.sock
-	port					= 3306
-	basedir					= /usr
-	datadir					= /var/lib/mysql
-
-	bind-address			= 0.0.0.0
-
-
-	character-set-server	= utf8mb4
-	collation-server		= utf8mb4_general_ci
-
-	[embedded]
-
-	[mariadb]
-
-	[mariadb-10.11]
+[script setup_db.sh details](#script-1)
 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
@@ -822,19 +780,71 @@ Specifies the base image for the Docker container.
 
 	#!/bin/sh
 
-	mysqld &
+	sed -i 's/bind-address\s*=\s*127\.0\.0\.1/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
+
+	service mariadb start
 
 	sleep 2
 
-	echo "CREATE DATABASE $DB_NAME;" | mysql
-	echo "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD';" | mysql
-	echo "GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD' WITH GRANT OPTION;" | mysql
-	echo "GRANT ALL ON $DB_NAME.* TO 'root'@'%' IDENTIFIED BY '$DB_ROOT_PASSWD' WITH GRANT OPTION;" | mysql
-	echo "FLUSH PRIVILEGES;" | mysql
+	echo "CREATE DATABASE $DB_NAME;" | mariadb
+	echo "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD';" | mariadb
+	echo "GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD' WITH GRANT OPTION;" | mariadb
+	echo "GRANT ALL ON $DB_NAME.* TO 'root'@'%' IDENTIFIED BY '$DB_ROOT_PASSWD' WITH GRANT OPTION;" | mariadb
+	echo "FLUSH PRIVILEGES;" | mariadb
 
-	mysqladmin shutdown
+	service mariadb stop
 
 	mysqld_safe
+
+This script starts running at the start up of the container. His main purpose is to configure and initialize a MariaDB database server.
+
+#### Modify configuration file
+
+**`sed -i 's/bind-address\s*=\s*127\.0\.0\.1/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf`**
+
+This command line allows to replace `bind-address` in a configuration file from mariadb because it's set to `127.0.0.1` (localhost) and we need to listen to `0.0.0.0` (all the network interfaces).
+
+`sed` : is used to perform basic text transformations on an input stream.
+
+`-i` : edit files in place (directly in the file without producing copy).
+
+**`s/bind-address\s*=\s*127\.0\.0\.1/bind-address = 0.0.0.0/`**
+
+`s/<regexp>/<replacement>/` : if `<regexp>` is find, replace that portion matched with `<replacement>`
+
+`<regexp>` -> `bind-address\s*=\s*127\.0\.0\.1` : search for bind-address = 127.0.0.1.<br> `\s*` stand for all the spaces that can be around the `=` and the others `\` to escape the dots.<br>
+`<replacement>` -> `bind-address = 0.0.0.0`
+
+`/etc/mysql/mariadb.conf.d/50-server.cnf` : path of the file we need to modify.
+
+#### Start mariadb
+
+`service mariadb start` : starting mariadb service.
+
+`sleep 2` : pauses the script for 2 seconds to ensure that the mariadb service has enough time to start.
+
+#### Create Database and Users
+
+All the variables uses in this script are imported in the environment variables of the container from the .env file.
+
+As we are in a script we can't use mariadb in interactive mode so we use pipes to pass the output to `mariadb` command, which executes it on the MariaDB server.
+
+`echo "CREATE DATABASE $DB_NAME;" | mariadb` : create database with the name from the environment variable `$DB_NAME`.
+
+`echo "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD';" | mariadb` : create a new user with the username stored in the env var `$DB_USER` and the password stored in the env var `$DB_PASSWD`.
+
+`echo "GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD' WITH GRANT OPTION;" | mariadb` : grant all privileges on the specified database to the new user.
+
+`echo "GRANT ALL ON $DB_NAME.* TO 'root'@'%' IDENTIFIED BY '$DB_ROOT_PASSWD' WITH GRANT OPTION;" | mariadb` : grant all privileges on the specified database to the `root` user.
+
+`echo "FLUSH PRIVILEGES;" | mariadb` : ensures that all changes take effect immediately.
+
+#### Restart MariaDB server
+
+`service mariadb stop` : stopping the mariadb service.
+
+`mysqld_safe` : start mariadb server in foreground.
+
 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
@@ -842,6 +852,12 @@ Specifies the base image for the Docker container.
 ---
 
 ### Documentations
+
+<details>
+<summary><strong>Sed</strong></summary>
+
+ - [man sed](https://linux.die.net/man/1/sed)
+</details>
 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
