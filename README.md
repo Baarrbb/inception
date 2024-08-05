@@ -423,58 +423,6 @@ This block defines the configuration for a server.
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
 
-
-
-
-
-
-<!-- `listen 443 ssl;` -> indique a nginx d'ecouter sur le port 443 et d'utiliser ssl.<br>
-`server_name localhost;` -> configure nom du server pour cette conf, icic localhost.<br>
-`ssl_certificate /etc/ssl/certs/certificate.crt;` -> Specifie chemin vers le certificat SSL utilise par le serveur.
-Emplacement ou on a copie dans le Dockerfile.<br>
-`ssl_certificate_key /etc/ssl/private/private.key;` -> Specifie le chemin vers la cle privee correspondant au certificat SSL definit juste avant.
-Emplacement ou on a copie dans le Dockerfile.<br>
-`ssl_protocols TLSv1.3;` -> definit les protocoles SSL/TLS autorises pour les connexions securises. Ici uniquement TLSv1.3.<br>
-`location / {}` -> definit la conf pour requete http entrante sur url correspondant a /<br>
-`root /usr/share/nginx/html;` -> specifie repertoire racine a partir du quel nginx cherche les fichiers a afficher.<br>
-`index index.html. index.htm;` -> fichiers index a afficher par defaut si aucun fichier specifique est demande dans l'url.<br>
-
-
-
-`location = /favicon.ico {
-	log_not_found off;
-}` -> j'avais une erreur qui apparaissait quand je me connectais a localhost par rapport a favicon.ico, donc pour eviter que cette erreur apparaisse encore j'ai ajouter cette exceptionn.
-
-
-#
-
-A partir de la on peut faire tourner notre nginx dans le conteneur avec 
-
-`docker build . -t nginx`
-
-pour construire notre image a partid u dockerfile.<br>
-`.` -> emplacement du dockerfile a build<br>
-`-t nginx` -> donner un tag a notre image.
-
-`docker run --name nginx -p443:443 nginx`
-
-`--name nginx` -> on nomme notre container `nginx`<br>
-`-p443:443` -> pour mapper le port du container sur le port hote. Donc le port 443 du container est expose sur notre port 443.<br>
-`nginx` -> l'image a run (dans notre build on l'a nomme nginx avec `-t nginx`).
-
-#
-
-Maintenant notre container run comme il faut.
-On peut verifier que les connexion en http (port 80) ne sont pas autorise avec :<br>
-`curl -v http://localhost` -> connection refused<br>
-`curl -v -k https://localhost` -> connexion au port 443 parfait.<br>
-`-k` -> pour ignorer les problemes de certificats qui sont auto-signes. -->
-
-
-
-
-
-
 ## WordPress + php-fpm
 
 Subject : A Docker container that contains WordPress (it must be installed and configured) and php-fpm only without nginx.
@@ -484,8 +432,6 @@ Subject : A Docker container that contains WordPress (it must be installed and c
 	FROM debian:stable
 
 	RUN apt update -y && apt install -y php-fpm curl php-mysql
-
-	COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 
 	COPY ./tools/entry.sh /entry.sh
 	RUN chmod +x /entry.sh
@@ -524,13 +470,6 @@ We need **php-mysql** because Wordpress uses MySQL database to stock all the dat
 ##
 
 `-y` : Used to automatically answer 'yes' to all prompt during the execution of the command and avoid manually confirming each action.
-
-#### Copying php configuration file
-
-From local file in `./conf/www.conf`<br>
-to `/etc/php/8.2/fpm/pool.d/www.conf` in the container, which is the default path for **php-fpm** configuration files.
-
-[php.conf details](#phpconf)
 
 #### Copying script
 
@@ -847,7 +786,6 @@ As we are in a script we can't use mariadb in interactive mode so we use pipes t
 
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
-
 
 ## Volumes
 
