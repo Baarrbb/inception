@@ -13,3 +13,34 @@ ajouter dans /etc/hosts
 docker exec wordpress wp user list --allow-root --path=/var/www/html
 
 
+50-server.cnf :
+
+
+
+[server]
+
+[mysqld]
+
+log_warnings			= 0
+log_error				= /var/log/mariadb/mariadb.log
+
+innodb_use_native_aio	= OFF
+
+user					= mysql
+pid-file				= /run/mysqld/mysqld.pid
+socket					= /run/mysqld/mysqld.sock
+port					= 3306
+basedir					= /usr
+datadir					= /var/lib/mysql
+
+bind-address			= 0.0.0.0
+
+
+character-set-server	= utf8mb4
+collation-server		= utf8mb4_general_ci
+
+[embedded]
+
+[mariadb]
+
+[mariadb-10.11]
