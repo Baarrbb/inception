@@ -859,6 +859,16 @@ As we are in a script we can't use mariadb in interactive mode so we use pipes t
  - [man sed](https://linux.die.net/man/1/sed)
 </details>
 
+<details>
+<summary><strong>Database</strong></summary>
+
+ - [WordPress with MariaDB](https://mariadb.com/es/resources/blog/how-to-install-and-run-wordpress-with-mariadb/)
+ - [Create database](https://mariadb.com/kb/en/create-database/)
+ - [Create user](https://mariadb.com/kb/en/create-user/)
+ - [Grant privileges](https://mariadb.com/kb/en/grant/)
+ - [mysqld_safe](https://dev.mysql.com/doc/refman/8.0/en/mysqld-safe.html)
+</details>
+
 <a href="#top"><img src="./readme_img/top.png" align="right"></a>
 <br>
 
