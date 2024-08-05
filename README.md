@@ -21,7 +21,6 @@ Virtualize several Docker images and set up a small infrastructure composed of d
 	- [WordPress + php-fpm](#wordpress--php-fpm)
 		<ul style="list-style-type:none;">
 		<li><a href="#dockerfile-2">Dockerfile</a></li>
-		<li><a href="#phpconf">php.conf</a></li>
 		<li><a href="#script">script</a></li>
 		<li><a href="#documentations-1">Doc</a></li>
 		</ul>
@@ -561,61 +560,13 @@ When the container starts, it executes `entry.sh`.
 
 ---
 
-### php.conf
-
-	[www]
-	user = www-data
-	group = www-data
-	listen = 0.0.0.0:9000
-	pm = dynamic
-	pm.max_children = 5
-	pm.start_servers = 2
-	pm.min_spare_servers = 1
-	pm.max_spare_servers = 3
-
-This file defines various settings for *php-fpm*. It is based on the default file provided by php-fpm ([see default file](./readme_img/www.conf)) with little modifications : 
- - we remove the line 36 `listen = /run/php/php8.1-fpm.sock` because Unix sockets are mainly used for local communication on the same machine. Between containers, a network connection is more suitable.
- - we replace the line above by `listen = 0.0.0.0:9000` to listen on all network interfaces on port 9000.
-
-#### `[www]`
-
-Start of a pool configuration section named `www`.
-
-##
-
-A **pool** is a group of PHP processes that share the same configuration and are managed together. Each pool can have its own specific configuration, allowing to manage different PHP applications with different requirements on the same server.
-
-##
-
-`user = www-data` : specifies the user under which the php-fpm processes will run.
-
-`group = www-data` : specifies the group under which the php-fpm processes will run.
-
-`listen = 0.0.0.0:9000` : Defines the IP address and port on which php-fpm will listen for incoming FastCGI requests. It will listen on all network interfaces on port 9000, the one used to communicate between our *wordpress* container and *nginx* container.
-
-`pm = dynamic` : specifies the process manager type. `dynamic` means php-fpm will manage the number of child processes dynamically based on the following settings. With this process management, there will be always at least 1 child.
-
-`pm.max_children = 5` : sets the maximum number of children that can be alive at the same time. This limits the total number of concurrent requests that can be handled.
-
-`pm.start_servers = 2` : specifies the number of child processes created on startup.
-
-`pm.min_spare_servers = 1` : defines the minimum number of idle child processes. If the number of idle processes is less than this number then some children will be created.
-
-`pm.max_spare_servers = 3` : defines the maximum number of idle child processes. If the number of idle processes exceeds this value, php-fpm will terminate some of the idle processes.
-
-
-
-<a href="#top"><img src="./readme_img/top.png" align="right"></a>
-<br>
-
----
-
-
 ### Script
 
 	#!/bin/sh
 
 	path=/var/www/html
+
+	sed -i 's/listen\s*=\s*\/run\/php\/php8.2-fpm.sock/listen = 0.0.0.0:9000/' /etc/php/8.2/fpm/pool.d/www.conf
 
 	curl -s -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 	chmod +x wp-cli.phar
@@ -643,6 +594,27 @@ This script starts running at the start up of the container. His main purpose is
 
 `path=/var/www/html` : WordPress container and NGINX container share a persisting volume which is located at `/var/www/html`.
 
+#### Modify configuration file
+
+**`sed -i 's/listen\s*=\s*\/run\/php\/php8.2-fpm.sock/listen = 0.0.0.0:9000/' /etc/php/8.2/fpm/pool.d/www.conf`**
+
+This command line allows to replace `listen` in a configuration file from php-fpm because it's set to `/run/php/php8.2-fpm.sock` and sockets are used to local communication and our server is not in the same container, so we replace by `0.0.0.0:9000` to listen on all the network interfaces on port 9000.
+
+`sed` : is used to perform basic text transformations on an input stream.
+
+`-i` : edit files in place (directly in the file without producing copy).
+
+**`s/listen\s*=\s*\/run\/php\/php8.2-fpm.sock/listen = 0.0.0.0:9000/`**
+
+`s/<regexp>/<replacement>/` : if `<regexp>` is find, replace that portion matched with `<replacement>`.
+
+`<regexp>` -> `listen\s*=\s*\/run\/php\/php8.2-fpm.sock` : search for `listen = /run/php/php8.2-fpm.sock`.<br> `\s*` stand for all the spaces that can be around the `=` and the others `\` to escape the `/`.<br>
+`<replacement>` -> `listen = 0.0.0.0:9000`
+
+`/etc/php/8.2/fpm/pool.d/www.conf` : path of the configuration file we need to modify.
+
+#### Get WP-CLI
+
 `curl -s -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar`
 
 `curl` : get data from the following URL.<br>
@@ -664,6 +636,8 @@ A **Phar** file (**PH**P **Ar**chive) is an archive format for storing PHP packa
 
 `rm -f $path/index.nginx-debian.html` : deletes the default NGINX index page if it exists.
 
+#### Set up WordPress with WP-CLI
+
 **`if [ ! "$(ls -A  $path)" ]; then`** 
 
 Checks if the directory `/var/www/html` is empty. If it is empty, the following commands are executed. If it's not it means that the Wordpress is already set up, it is possible because we have a persisting volume.
@@ -677,6 +651,8 @@ Checks if the directory `/var/www/html` is empty. If it is empty, the following 
 `wp user create --allow-root --path=$path $WP_USER $WP_EMAIL --user_pass=$WP_PASSWD --role=$WP_USER_ROLE --quiet` : creates an additional WordPress user with the specified username, email, password and role.
 
 **`fi`**
+
+#### Start php-fpm
 
 `php-fpm8.2 -F -y /etc/php/8.2/fpm/php-fpm.conf` : starts *php-fpm*, `-y` using the configuration file located at `/etc/php/8.2/fpm/php-fpm.conf`, `-F` force to stay in foreground and ignore daemonize option from configuration file (`/etc/php/8.2/fpm/php-fpm.conf`).
 
@@ -812,7 +788,7 @@ This command line allows to replace `bind-address` in a configuration file from 
 
 `s/<regexp>/<replacement>/` : if `<regexp>` is find, replace that portion matched with `<replacement>`
 
-`<regexp>` -> `bind-address\s*=\s*127\.0\.0\.1` : search for bind-address = 127.0.0.1.<br> `\s*` stand for all the spaces that can be around the `=` and the others `\` to escape the dots.<br>
+`<regexp>` -> `bind-address\s*=\s*127\.0\.0\.1` : search for `bind-address = 127.0.0.1`.<br> `\s*` stand for all the spaces that can be around the `=` and the others `\` to escape the dots.<br>
 `<replacement>` -> `bind-address = 0.0.0.0`
 
 `/etc/mysql/mariadb.conf.d/50-server.cnf` : path of the file we need to modify.
