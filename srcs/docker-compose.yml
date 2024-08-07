@@ -5,8 +5,6 @@ services:
     build: ./requirements/mariadb/
     container_name: mariadb
     restart: always
-    ports:
-      - "3306:3306"
     env_file: .env
     volumes:
       - "DB:/var/lib/mysql"
@@ -17,8 +15,6 @@ services:
     build: ./requirements/wordpress/
     container_name: wordpress
     restart: always
-    ports:
-      - "9000:9000"
     depends_on:
       - mariadb
     env_file: .env
