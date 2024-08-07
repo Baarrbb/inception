@@ -9,7 +9,7 @@ services:
     volumes:
       - "DB:/var/lib/mysql"
     networks:
-      - default
+      - inception
 
   wordpress:
     build: ./requirements/wordpress/
@@ -21,7 +21,7 @@ services:
     volumes:
       - "WP_files:/var/www/html"
     networks:
-      - default
+      - inception
 
   nginx:
     build: ./requirements/nginx/
@@ -34,7 +34,7 @@ services:
     volumes:
       - "WP_files:/var/www/html"
     networks:
-      - default
+      - inception
 
 volumes:
   WP_files:
@@ -51,5 +51,5 @@ volumes:
       device: "/home/bsuc/data/db"
 
 networks:
-  default:
+  inception:
     driver: bridge

@@ -436,8 +436,6 @@ Subject : A Docker container that contains WordPress (it must be installed and c
 	COPY ./tools/entry.sh /entry.sh
 	RUN chmod +x /entry.sh
 
-	EXPOSE 9000
-
 	ENTRYPOINT ["./entry.sh"]
 
 #### Base image
@@ -481,11 +479,6 @@ to `/entry.sh` at the root of the container.
 #### Make the script executable
 
 `chmod +x /entry.sh` in the container to make the script executable.
-
-#### Port 9000
-
-Documentation on which port need to be expose.<br>
-`9000` is generally the default port for php-fpm to listen at the server requests.
 
 #### Entrypoint
 
@@ -652,8 +645,6 @@ Subject : A Docker container that contains MariaDB only without nginx.
 	COPY ./tools/setup_db.sh /
 	RUN chmod +x setup_db.sh
 
-	EXPOSE 3306
-
 	ENTRYPOINT ["./setup_db.sh"]
 
 #### Base image
@@ -674,11 +665,6 @@ to `/setup_db.sh` at the root of the container.
 `chmod +x setup_db.sh` : make the script executable in the container.
 
 [script setup_db.sh details](#script-1)
-
-#### Port 3306
-
-Documentation on which port need to be expose.<br>
-`3306` is generally the default port for MariaDB.
 
 #### Entrypoint
 
@@ -731,6 +717,8 @@ This command line allows to replace `bind-address` in a configuration file from 
 `<replacement>` -> `bind-address = 0.0.0.0`
 
 `/etc/mysql/mariadb.conf.d/50-server.cnf` : path of the file we need to modify.
+
+By default MariaDB listens to `3306` so we don't have to modify anything for the port.
 
 #### Start mariadb
 
@@ -885,18 +873,36 @@ Networks let services communicate with each other.
 ### From docker-compose `networks` :
 
 	networks:
-	  default:
+	  inception:
 		driver: bridge
 
 #### `networks` :
 
 Allow us to define custom networks for our Docker services. Docker Compose will use these networks to control how containers communicate with each other.
 
-`default` : in Docker Compose 'default' is the name of the network created by default, so all the services will be connected to this network.
+`inception` : the name of our network.
 
 `driver: bridge` : specifies that the network driver used is `bridge`.
 
 `bridge` : Docker sets up a private internal network on the host system. Containers connected to this network can communicate with each other using their container names as hostnames, but they are isolated from other networks and from external network unless we explicitly expose or publish ports.
+
+### From docker-compose `services` :
+
+	services:
+
+	  mariadb:
+		networks:
+		  - inception
+
+	  wordpress:
+		networks:
+		  - inception
+
+	  nginx:
+		networks:
+		  - inception
+
+Explicitly connect our services to our network `inception`.
 
 ### Documentation
 
