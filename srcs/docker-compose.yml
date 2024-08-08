@@ -42,6 +42,7 @@ services:
       - "443:443"
     depends_on:
       - wordpress
+    env_file: .env
     volumes:
       - "WP_files:/var/www/html"
     networks:
@@ -74,3 +75,6 @@ secrets:
     file: ../secrets/wp_password.txt
   my_wp_admin_passwd:
     file: ../secrets/wp_admin_password.txt
+  my_credentials:
+    external: true
+
