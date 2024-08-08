@@ -5,6 +5,8 @@ services:
     build: ./requirements/mariadb/
     container_name: mariadb
     restart: always
+    expose:
+     - "3306"
     env_file: .env
     volumes:
       - "DB:/var/lib/mysql"
@@ -15,6 +17,8 @@ services:
     build: ./requirements/wordpress/
     container_name: wordpress
     restart: always
+    expose:
+      - "9000"
     depends_on:
       - mariadb
     env_file: .env
@@ -53,3 +57,7 @@ volumes:
 networks:
   inception:
     driver: bridge
+
+secrets:
+  my_secret:
+    file: ../secrets/db_password.txt

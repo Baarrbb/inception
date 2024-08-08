@@ -439,6 +439,8 @@ Subject : A Docker container that contains WordPress (it must be installed and c
 	COPY ./tools/entry.sh /entry.sh
 	RUN chmod +x /entry.sh
 
+	EXPOSE 9000
+
 	ENTRYPOINT ["./entry.sh"]
 
 #### Base image
@@ -482,6 +484,10 @@ to `/entry.sh` at the root of the container.
 #### Make the script executable
 
 `chmod +x /entry.sh` in the container to make the script executable.
+
+#### Expose 9000
+
+`Expose` makes one or more ports inside the container accessible to other Docker services on the same Docker network, but it doesn't expose them outside the container (i.e., not on the host or external networks).
 
 #### Entrypoint
 
@@ -648,6 +654,8 @@ Subject : A Docker container that contains MariaDB only without nginx.
 	COPY ./tools/setup_db.sh /
 	RUN chmod +x setup_db.sh
 
+	EXPOSE 3306
+
 	ENTRYPOINT ["./setup_db.sh"]
 
 #### Base image
@@ -668,6 +676,10 @@ to `/setup_db.sh` at the root of the container.
 `chmod +x setup_db.sh` : make the script executable in the container.
 
 [script setup_db.sh details](#script-1)
+
+#### Expose 3306
+
+`Expose` makes one or more ports inside the container accessible to other Docker services on the same Docker network, but it doesn't expose them outside the container (i.e., not on the host or external networks).
 
 #### Entrypoint
 
