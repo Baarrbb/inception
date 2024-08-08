@@ -8,4 +8,6 @@ RUN chmod +x /entry.sh
 
 EXPOSE 9000
 
+CMD ["sleep", "5"]
+
 ENTRYPOINT ["./entry.sh"]

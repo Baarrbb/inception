@@ -9,6 +9,7 @@ services:
      - "3306"
     env_file: .env
     secrets:
+      - my_db_user
       - my_db_passwd
       - my_db_root_passwd
     volumes:
@@ -25,8 +26,11 @@ services:
     depends_on:
       - mariadb
     secrets:
+      - my_db_user
       - my_db_passwd
+      - my_wp_admin
       - my_wp_admin_passwd
+      - my_wp_user
       - my_wp_passwd
     env_file: .env
     volumes:
@@ -67,14 +71,18 @@ networks:
     driver: bridge
 
 secrets:
+  my_db_user:
+    file: ../secrets/db_user.txt
   my_db_passwd:
     file: ../secrets/db_password.txt
   my_db_root_passwd:
     file: ../secrets/db_root_password.txt
-  my_wp_passwd:
-    file: ../secrets/wp_password.txt
+  my_wp_admin:
+    file: ../secrets/wp_admin.txt
   my_wp_admin_passwd:
     file: ../secrets/wp_admin_password.txt
-  my_credentials:
-    external: true
+  my_wp_user:
+    file: ../secrets/wp_user.txt
+  my_wp_passwd:
+    file: ../secrets/wp_password.txt
 
