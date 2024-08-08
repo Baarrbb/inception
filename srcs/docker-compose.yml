@@ -8,6 +8,9 @@ services:
     expose:
      - "3306"
     env_file: .env
+    secrets:
+      - my_db_passwd
+      - my_db_root_passwd
     volumes:
       - "DB:/var/lib/mysql"
     networks:
@@ -21,6 +24,10 @@ services:
       - "9000"
     depends_on:
       - mariadb
+    secrets:
+      - my_db_passwd
+      - my_wp_admin_passwd
+      - my_wp_passwd
     env_file: .env
     volumes:
       - "WP_files:/var/www/html"
@@ -59,5 +66,11 @@ networks:
     driver: bridge
 
 secrets:
-  my_secret:
+  my_db_passwd:
     file: ../secrets/db_password.txt
+  my_db_root_passwd:
+    file: ../secrets/db_root_password.txt
+  my_wp_passwd:
+    file: ../secrets/wp_password.txt
+  my_wp_admin_passwd:
+    file: ../secrets/wp_admin_password.txt
