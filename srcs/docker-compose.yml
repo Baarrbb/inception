@@ -45,10 +45,20 @@ services:
     ports:
       - "443:443"
     depends_on:
+      - static
       - wordpress
     env_file: .env
     volumes:
       - "WP_files:/var/www/html"
+    networks:
+      - inception
+
+  static:
+    build: ./requirements/bonus/static/
+    container_name: static
+    restart: always
+    expose:
+      - "8080"
     networks:
       - inception
 
