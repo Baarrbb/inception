@@ -28,11 +28,12 @@ if [ ! "$(ls -A  $path)" ]; then
 	wp config create --allow-root --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWD --dbhost=$WP_HOST_DB --quiet
 
 	# # CONFIG REDIS
-	wp config set WP_REDIS_HOST 'redis' --allow-root
-	wp config set WP_REDIS_PORT 6379 --allow-root
+	wp config set WP_REDIS_HOST $WP_HOST_REDIS --allow-root
+	wp config set WP_REDIS_PORT $WP_PORT_REDIS --allow-root
 
 	# CREATE ADMIN
-	wp core install --allow-root --path=$path --url=$DOMAIN_NAME --title="Inception" --admin_user=$WP_ADMIN --admin_password=$WP_ADMIN_PASSWD --admin_email=$WP_ADMIN_EMAIL
+	# wp core install --allow-root --path=$path --url=$DOMAIN_NAME --title="Inception" --admin_user=$WP_ADMIN --admin_password=$WP_ADMIN_PASSWD --admin_email=$WP_ADMIN_EMAIL
+	wp core install --allow-root --path=$path --url=$DOMAIN_NAME --title=$WP_TITLE --admin_user=$WP_ADMIN --admin_password=$WP_ADMIN_PASSWD --admin_email=$WP_ADMIN_EMAIL
 
 	# CREATE USER
 	wp user create --allow-root --path=$path $WP_USER $WP_EMAIL --user_pass=$WP_PASSWD --role=$WP_USER_ROLE --quiet
