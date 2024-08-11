@@ -1,5 +1,9 @@
 #!/bin/sh
 
+DB_USER=$(cat /run/secrets/my_db_user)
+DB_PASSWD=$(cat /run/secrets/my_db_passwd)
+DB_ROOT_PASSWD=$(cat /run/secrets/my_db_root_passwd)
+
 sed -i 's/bind-address\s*=\s*127\.0\.0\.1/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
 
 service mariadb start

@@ -30,8 +30,10 @@ services:
       - my_db_passwd
       - my_wp_admin
       - my_wp_admin_passwd
+      - my_wp_admin_email
       - my_wp_user
       - my_wp_passwd
+      - my_wp_email
     env_file: .env
     volumes:
       - "WP_files:/var/www/html"
@@ -61,6 +63,17 @@ services:
       - "443"
     volumes:
       - "static_files:/var/www/html/static"
+    networks:
+      - inception
+
+  redis:
+    build: ./requirements/bonus/redis
+    container_name: redis
+    restart: always
+    expose:
+      - "6379"
+    depends_on:
+      - wordpress
     networks:
       - inception
 
@@ -99,8 +112,12 @@ secrets:
     file: ../secrets/wp_admin.txt
   my_wp_admin_passwd:
     file: ../secrets/wp_admin_password.txt
+  my_wp_admin_email:
+    file: ../secrets/wp_admin_email.txt
   my_wp_user:
     file: ../secrets/wp_user.txt
   my_wp_passwd:
     file: ../secrets/wp_password.txt
+  my_wp_email:
+    file: ../secrets/wp_email.txt
 
