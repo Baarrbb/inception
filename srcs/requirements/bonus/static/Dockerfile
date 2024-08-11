@@ -6,8 +6,9 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 RUN mkdir static
-COPY ./website/index.html /static/index.html
+# COPY ./website/index.html /static/index.html
+COPY ./website/index.html /var/www/html/static/
 
-EXPOSE 8080
+EXPOSE 443
 
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]

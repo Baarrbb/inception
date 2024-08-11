@@ -58,7 +58,9 @@ services:
     container_name: static
     restart: always
     expose:
-      - "8080"
+      - "443"
+    volumes:
+      - "static_files:/var/www/html/static"
     networks:
       - inception
 
@@ -66,15 +68,21 @@ volumes:
   WP_files:
     driver: local
     driver_opts:
-      type : none
+      type: none
       o: bind
       device: "/home/bsuc/data/wp_files"
   DB:
     driver: local
     driver_opts:
-      type : none
+      type: none
       o: bind
       device: "/home/bsuc/data/db"
+  static_files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "/home/bsuc/data/static_files"
 
 networks:
   inception:
