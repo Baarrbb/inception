@@ -13,6 +13,19 @@ ajouter dans /etc/hosts
 docker exec wordpress wp user list --allow-root --path=/var/www/html
 
 
+Telecharger sur hote lftp (pcq use ssl)
+
+> lftp -u anonymous bsuc.42.fr -e "set ssl:verify-certificate no;"
+pour session unique sinon dans /etc/lftp.conf ajouet : 
+set ssl:verify-certificate no;
+
+Sinon on desactive totalement ssl dans vsftpd (commenter ligne concerne)
+et utiliser ftp :
+> ftp bsuc.42.fr
+
+
+/var/run/vsftpd/empty
+
 50-server.cnf :
 
 

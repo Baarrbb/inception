@@ -38,7 +38,7 @@ if [ ! "$(ls -A  $path)" ]; then
 	# CREATE USER
 	wp user create --allow-root --path=$path $WP_USER $WP_EMAIL --user_pass=$WP_PASSWD --role=$WP_USER_ROLE --quiet
 
-	# # PLUGIN REDIS DANS WORDPRESS
+	# PLUGIN REDIS DANS WORDPRESS
 	wp plugin install redis-cache --activate --allow-root
 	wp redis enable --allow-root
 fi

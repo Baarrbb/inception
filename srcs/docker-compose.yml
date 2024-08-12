@@ -76,6 +76,20 @@ services:
     networks:
       - inception
 
+  ftp:
+    build: ./requirements/bonus/ftp
+    container_name: ftp
+    restart: always
+    ports:
+      - "21:21"
+      - "40000-40100:40000-40100"
+    depends_on:
+      - nginx
+    volumes:
+      - "WP_files:/srv/ftp"
+    networks:
+      - inception
+
 volumes:
   WP_files:
     driver: local
