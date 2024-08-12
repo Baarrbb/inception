@@ -36,7 +36,7 @@ services:
       - my_wp_email
     env_file: .env
     volumes:
-      - "WP_files:/var/www/html"
+      - "WP_files:/var/www/wordpress"
     networks:
       - inception
 
@@ -49,8 +49,9 @@ services:
     depends_on:
       - static
       - wordpress
+      - adminer
     volumes:
-      - "WP_files:/var/www/html"
+      - "WP_files:/var/www/wordpress"
     networks:
       - inception
 
@@ -61,7 +62,7 @@ services:
     expose:
       - "443"
     volumes:
-      - "static_files:/var/www/html/static"
+      - "static_files:/var/www/static"
     networks:
       - inception
 
@@ -87,6 +88,15 @@ services:
       - nginx
     volumes:
       - "WP_files:/srv/ftp"
+    networks:
+      - inception
+
+  adminer:
+    build: ./requirements/bonus/adminer
+    container_name: adminer
+    restart: always
+    expose:
+      - "9000"
     networks:
       - inception
 
