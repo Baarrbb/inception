@@ -50,6 +50,7 @@ services:
       - static
       - wordpress
       - adminer
+      - monitorix
     volumes:
       - "WP_files:/var/www/wordpress"
     networks:
@@ -100,6 +101,18 @@ services:
     networks:
       - inception
 
+  monitorix:
+    build: ./requirements/bonus/monitorix
+    container_name: monitorix
+    restart: always
+    expose:
+      - "8080"
+    networks:
+      - inception
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+
 volumes:
   WP_files:
     driver: local
@@ -119,6 +132,7 @@ volumes:
       type: none
       o: bind
       device: "/home/bsuc/data/static_files"
+
 
 networks:
   inception:
