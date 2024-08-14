@@ -25,6 +25,24 @@ Sinon on desactive totalement ssl dans vsftpd (commenter ligne concerne)
 et utiliser ftp :
 > ftp bsuc.42.fr
 
+		location /monitorix {
+			proxy_pass http://monitorix:8080;
+			proxy_set_header Host $host;
+			proxy_set_header X-Real-IP $remote_addr;
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header X-Forwarded-Proto $scheme;
+
+			location ~ ^/monitorix/static/(.*)$ {
+				root /var/www/html/monitorix;
+				try_files $uri $uri/ /index.html;
+			}
+		}
+
+
+
+
+
+
 
 /var/run/vsftpd/empty
 

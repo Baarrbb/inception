@@ -50,7 +50,7 @@ services:
       - static
       - wordpress
       - adminer
-      - monitorix
+      # - monitorix
     volumes:
       - "WP_files:/var/www/wordpress"
     networks:
@@ -101,17 +101,18 @@ services:
     networks:
       - inception
 
-  monitorix:
-    build: ./requirements/bonus/monitorix
-    container_name: monitorix
-    restart: always
-    expose:
-      - "8080"
-    networks:
-      - inception
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
+  # monitorix:
+  #   build: ./requirements/bonus/monitorix
+  #   container_name: monitorix
+  #   restart: always
+  #   expose:
+  #     - "8080"
+  #   networks:
+  #     - inception
+  #   cap_add:
+  #     - NET_ADMIN
+  #     - SYS_MODULE
+  #     - NET_RAW
 
 volumes:
   WP_files:

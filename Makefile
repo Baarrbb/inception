@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/08/14 15:11:31 by marvin           ###   ########.fr        #
+#    Updated: 2024/08/15 00:16:36 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ _LIGHT_GREY=\x1b[38;5;242m
 all :
 	@ sudo mkdir -p /home/bsuc/data/db
 	@ sudo mkdir -p /home/bsuc/data/wp_files
+	@ sudo mkdir -p /home/bsuc/data/static_files
 	@ docker compose -f ./srcs/docker-compose.yml up -d
 
 fclean :
@@ -67,14 +68,14 @@ logs :
 	@ echo "$(_YELLOW)--- NGINX LOGS ---$(_END)"
 	@ docker logs nginx
 	@ echo "$(_YELLOW)--- REDIS LOGS ---$(_END)"
-	@ docker logs redis
-	@ echo "$(_YELLOW)--- ADMINER LOGS ---$(_END)"
-	@ docker logs adminer
-	@ echo "$(_YELLOW)--- FTP LOGS ---$(_END)"
-	@ docker logs ftp
-	@ echo "$(_YELLOW)--- STATIC LOGS ---$(_END)"
-	@ docker logs static
-	@ echo "$(_YELLOW)--- MONITORIX LOGS ---$(_END)"
-	@ docker logs monitorix
+# @ docker logs redis
+# @ echo "$(_YELLOW)--- ADMINER LOGS ---$(_END)"
+# @ docker logs adminer
+# @ echo "$(_YELLOW)--- FTP LOGS ---$(_END)"
+# @ docker logs ftp
+# @ echo "$(_YELLOW)--- STATIC LOGS ---$(_END)"
+# @ docker logs static
+# @ echo "$(_YELLOW)--- MONITORIX LOGS ---$(_END)"
+# @ docker logs monitorix
 
 re: fclean all
