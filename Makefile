@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/08/15 00:16:36 by marvin           ###   ########.fr        #
+#    Updated: 2024/08/15 17:37:45 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,9 @@ fclean :
 	@ docker volume ls -q | xargs docker volume rm 2> /dev/null || true
 	@ docker network ls -q | xargs docker network rm 2> /dev/null || true
 
+ftp :
+	lftp -u anonymous bsuc.42.fr -e "set ssl:verify-certificate no;"
+
 
 logs : 
 	@ echo "$(_YELLOW)--- MARIADB LOGS ---$(_END)"
@@ -75,7 +78,7 @@ logs :
 # @ docker logs ftp
 # @ echo "$(_YELLOW)--- STATIC LOGS ---$(_END)"
 # @ docker logs static
-# @ echo "$(_YELLOW)--- MONITORIX LOGS ---$(_END)"
-# @ docker logs monitorix
+	@ echo "$(_YELLOW)--- MONITORIX LOGS ---$(_END)"
+	@ docker logs monitorix
 
 re: fclean all
