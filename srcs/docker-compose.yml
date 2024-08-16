@@ -51,6 +51,7 @@ services:
       - wordpress
       - adminer
       - monitorix
+      - prometheus
     volumes:
       - "WP_files:/var/www/wordpress"
     networks:
@@ -107,12 +108,34 @@ services:
     restart: always
     expose:
       - "8080"
+    volumes:
+      - "monitor_files:/var/lib/monitorix"
     networks:
       - inception
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
       - NET_RAW
+
+  prometheus:
+    build: ./requirements/bonus/prometheus
+    container_name: prometheus
+    restart: always
+    expose:
+      - "9090"
+    networks:
+      - inception
+
+  nginx-exporter:
+    build: ./requirements/bonus/nginx-exporter
+    container_name: nginx-exporter
+    restart: always
+    expose:
+      - "9113"
+    depends_on:
+      - nginx
+    networks:
+      - inception
 
 volumes:
   WP_files:
@@ -133,6 +156,12 @@ volumes:
       type: none
       o: bind
       device: "/home/bsuc/data/static_files"
+  monitor_files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "/home/bsuc/data/monitor_files"
 
 
 networks:

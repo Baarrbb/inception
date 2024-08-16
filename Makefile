@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/08/15 17:37:45 by marvin           ###   ########.fr        #
+#    Updated: 2024/08/16 15:23:05 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ all :
 	@ sudo mkdir -p /home/bsuc/data/db
 	@ sudo mkdir -p /home/bsuc/data/wp_files
 	@ sudo mkdir -p /home/bsuc/data/static_files
+	@ sudo mkdir -p /home/bsuc/data/monitor_files
 	@ docker compose -f ./srcs/docker-compose.yml up -d
 
 fclean :
@@ -59,9 +60,20 @@ fclean :
 	@ docker volume ls -q | xargs docker volume rm 2> /dev/null || true
 	@ docker network ls -q | xargs docker network rm 2> /dev/null || true
 
+clean : stop
+	@ docker ps -qa | xargs docker rm 2> /dev/null || true
+	@ docker images -qa | xargs docker rmi -f 2> /dev/null || true
+
+restart : clean all
+
+stop :
+	@ docker ps -qa | xargs docker stop 2> /dev/null || true
+
+kill :
+	@ docker ps -qa | xargs docker kill 2> /dev/null || true
+
 ftp :
 	lftp -u anonymous bsuc.42.fr -e "set ssl:verify-certificate no;"
-
 
 logs : 
 	@ echo "$(_YELLOW)--- MARIADB LOGS ---$(_END)"
@@ -70,7 +82,7 @@ logs :
 	@ docker logs wordpress
 	@ echo "$(_YELLOW)--- NGINX LOGS ---$(_END)"
 	@ docker logs nginx
-	@ echo "$(_YELLOW)--- REDIS LOGS ---$(_END)"
+# @ echo "$(_YELLOW)--- REDIS LOGS ---$(_END)"
 # @ docker logs redis
 # @ echo "$(_YELLOW)--- ADMINER LOGS ---$(_END)"
 # @ docker logs adminer
@@ -78,7 +90,11 @@ logs :
 # @ docker logs ftp
 # @ echo "$(_YELLOW)--- STATIC LOGS ---$(_END)"
 # @ docker logs static
-	@ echo "$(_YELLOW)--- MONITORIX LOGS ---$(_END)"
-	@ docker logs monitorix
+# @ echo "$(_YELLOW)--- MONITORIX LOGS ---$(_END)"
+# @ docker logs monitorix
+	@ echo "$(_YELLOW)--- PROMETHEUS LOGS ---$(_END)"
+	@ docker logs prometheus
 
-re: fclean all
+# re: fclean all
+
+re: restart
