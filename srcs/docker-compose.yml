@@ -52,6 +52,7 @@ services:
       - adminer
       - monitorix
       - prometheus
+      - grafana
     volumes:
       - "WP_files:/var/www/wordpress"
     networks:
@@ -134,6 +135,17 @@ services:
       - "9113"
     depends_on:
       - nginx
+    networks:
+      - inception
+
+  grafana:
+    build: ./requirements/bonus/grafana
+    container_name: grafana
+    restart: always
+    expose:
+      - "3000"
+    depends_on:
+      - prometheus
     networks:
       - inception
 
