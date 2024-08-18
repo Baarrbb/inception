@@ -5,10 +5,11 @@ datasources:
   - name: Prometheus
     type: prometheus
     access: proxy
-    url: http://prometheus:9090
+    url: http://prometheus:9090/prometheus
     isDefault: true
+    uid: bdv7jfa1eavi8b
     jsonData:
-      timeIntervals: "15s"
+      timeInterval: "15s"
 
 # # List of data sources to delete from the database.
 # deleteDatasources:

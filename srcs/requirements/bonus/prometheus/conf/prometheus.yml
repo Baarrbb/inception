@@ -8,18 +8,16 @@ rule_files:
 
 scrape_configs:
   # - job_name: prometheus
-  #   metrics_path: /prometheus/metrics
+  #   metrics_path: /prometheus/metrics  http://localhost:9090/api/v1/query?query=up
   #   static_configs:
   #     - targets: ['localhost:9090']
 
   - job_name: nginx
     static_configs:
       - targets: ['nginx-exporter:9113']
-    remote_write:
-    - url: ['grafana:3000']
-      basic_auth:
-        username: admin
-        password: admin
+    # remote_write:
+    # - url: ['grafana:3000']
+    #   basic_auth:
+    #     username: admin
+    #     password: admin
   
-
-
