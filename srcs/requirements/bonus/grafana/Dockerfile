@@ -16,6 +16,10 @@ COPY ./conf/dashboard.yml /etc/grafana/provisioning/dashboards/
 COPY ./conf/datasource.yml /etc/grafana/provisioning/datasources/
 COPY ./conf/nginx-dashboard.json /var/lib/grafana/dashboards/
 
-CMD ["grafana-server", "--homepath=/usr/share/grafana", "--config=/etc/grafana/grafana.ini"]
+# CMD ["grafana-server", "--homepath=/usr/share/grafana", "--config=/etc/grafana/grafana.ini"]
 
+COPY ./tools/start.sh /
+RUN chmod +x start.sh
+
+ENTRYPOINT ["./start.sh"]
 

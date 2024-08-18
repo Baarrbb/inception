@@ -148,6 +148,18 @@ services:
       - "3000"
     depends_on:
       - prometheus
+    secrets:
+      - my_graf_admin
+      - my_graf_passwd
+    environment:
+      GF_SECURITY_ADMIN_USER__FILE: /run/secrets/my_graf_admin
+      GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/my_graf_passwd
+    # environment:
+    #   - GF_SECURITY_ADMIN_USER__FILE=/run/secrets/my_graf_admin
+    #   - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/my_graf_passwd
+    # environment:
+    #   GF_SECURITY_ADMIN_USER: graf_god
+    #   GF_SECURITY_ADMIN_PASSWORD: 55555
     networks:
       - inception
 
@@ -183,7 +195,6 @@ volumes:
       o: bind
       device: "/home/bsuc/data/prom_data"
 
-
 networks:
   inception:
     driver: bridge
@@ -207,4 +218,7 @@ secrets:
     file: ../secrets/wp_password.txt
   my_wp_email:
     file: ../secrets/wp_email.txt
-
+  my_graf_passwd:
+    file: ../secrets/graf_password.txt
+  my_graf_admin:
+    file: ../secrets/graf_admin.txt
