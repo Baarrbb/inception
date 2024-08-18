@@ -11,19 +11,11 @@ RUN apt update -y && apt install -y grafana
 
 EXPOSE 3000
 
-# CMD ["bash", "-c", "while true; do sleep 1000; done"]
-
-# COPY ./conf/grafana.ini /etc/grafana/grafana.ini
-COPY ./conf/graf.ini /etc/grafana/grafana.ini
-
+COPY ./conf/grafana.ini /etc/grafana/grafana.ini
 COPY ./conf/dashboard.yml /etc/grafana/provisioning/dashboards/
-COPY ./conf/nginx-dashboard.json /var/lib/grafana/dashboards/
 COPY ./conf/datasource.yml /etc/grafana/provisioning/datasources/
-
-# RUN chown :grafana /etc/grafana/provisioning/datasources/datasource.yml
+COPY ./conf/nginx-dashboard.json /var/lib/grafana/dashboards/
 
 CMD ["grafana-server", "--homepath=/usr/share/grafana", "--config=/etc/grafana/grafana.ini"]
 
 
-
-# CMD ["grafana-server", "--config=/etc/grafana/grafana.ini"]

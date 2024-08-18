@@ -124,6 +124,8 @@ services:
     restart: always
     expose:
       - "9090"
+    volumes:
+      - "prom_data:/var/lib/prometheus"
     networks:
       - inception
 
@@ -174,6 +176,12 @@ volumes:
       type: none
       o: bind
       device: "/home/bsuc/data/monitor_files"
+  prom_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "/home/bsuc/data/prom_data"
 
 
 networks:
