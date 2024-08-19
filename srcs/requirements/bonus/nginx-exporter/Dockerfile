@@ -11,5 +11,5 @@ EXPOSE 9113
 
 # CMD ["bash", "-c", "while true; do sleep 1000; done"]
 
-CMD ["nginx-prometheus-exporter", "--no-nginx.ssl-verify", "--nginx.scrape-uri=https://nginx:443/nginx_status"]
+CMD ["nginx-prometheus-exporter", "--no-nginx.ssl-verify", "--nginx.scrape-uri=https://nginx:443/nginx_status", "--log.level=warn"]
 

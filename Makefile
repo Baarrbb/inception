@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/08/18 22:21:09 by marvin           ###   ########.fr        #
+#    Updated: 2024/08/19 14:51:29 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,25 +76,31 @@ kill :
 ftp :
 	lftp -u anonymous bsuc.42.fr -e "set ssl:verify-certificate no;"
 
-logs : 
+logs :
 	@ echo "$(_YELLOW)--- MARIADB LOGS ---$(_END)"
 	@ docker logs mariadb
 	@ echo "$(_YELLOW)--- WORDPRESS LOGS ---$(_END)"
 	@ docker logs wordpress
 	@ echo "$(_YELLOW)--- NGINX LOGS ---$(_END)"
 	@ docker logs nginx
-# @ echo "$(_YELLOW)--- REDIS LOGS ---$(_END)"
-# @ docker logs redis
-# @ echo "$(_YELLOW)--- ADMINER LOGS ---$(_END)"
-# @ docker logs adminer
-# @ echo "$(_YELLOW)--- FTP LOGS ---$(_END)"
-# @ docker logs ftp
-# @ echo "$(_YELLOW)--- STATIC LOGS ---$(_END)"
-# @ docker logs static
-# @ echo "$(_YELLOW)--- MONITORIX LOGS ---$(_END)"
-# @ docker logs monitorix
+
+	@ echo "$(_YELLOW)--- REDIS LOGS ---$(_END)"
+	@ docker logs redis
+	@ echo "$(_YELLOW)--- ADMINER LOGS ---$(_END)"
+	@ docker logs adminer
+	@ echo "$(_YELLOW)--- FTP LOGS ---$(_END)"
+	@ docker logs ftp
+	@ echo "$(_YELLOW)--- STATIC LOGS ---$(_END)"
+	@ docker logs static
+	@ echo "$(_YELLOW)--- MONITORIX LOGS ---$(_END)"
+	@ docker logs monitorix
 	@ echo "$(_YELLOW)--- PROMETHEUS LOGS ---$(_END)"
 	@ docker logs prometheus
+	@ echo "$(_YELLOW)--- NGINX-EXPORTER LOGS ---$(_END)"
+	@ docker logs nginx-exporter
+	@ echo "$(_YELLOW)--- GRAFANA LOGS ---$(_END)"
+	@ docker logs grafana
+
 
 # re: fclean all
 
