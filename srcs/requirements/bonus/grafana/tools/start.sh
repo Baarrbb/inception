@@ -8,4 +8,6 @@ sed -i "s/;admin_user = admin/admin_user = ${GRAF_ADMIN}/" /etc/grafana/grafana.
 sed -i "s/;admin_password = admin/admin_password = ${GRAF_PASSWD}/" /etc/grafana/grafana.ini
 
 
-grafana-server --homepath=/usr/share/grafana --config=/etc/grafana/grafana.ini
+# exec grafana-server --homepath=/usr/share/grafana --config=/etc/grafana/grafana.ini
+
+exec /usr/share/grafana/bin/grafana server --homepath=/usr/share/grafana --config=/etc/grafana/grafana.ini

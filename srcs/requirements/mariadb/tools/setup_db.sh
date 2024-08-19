@@ -18,4 +18,4 @@ echo "FLUSH PRIVILEGES;" | mariadb
 
 service mariadb stop
 
-mysqld_safe
+exec mysqld_safe

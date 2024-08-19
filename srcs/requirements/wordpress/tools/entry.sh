@@ -42,4 +42,4 @@ if [ ! "$(ls -A  $path)" ]; then
 	wp redis enable --allow-root
 fi
 
-php-fpm8.2 -F -y /etc/php/8.2/fpm/php-fpm.conf
+exec php-fpm8.2 -F -y /etc/php/8.2/fpm/php-fpm.conf
