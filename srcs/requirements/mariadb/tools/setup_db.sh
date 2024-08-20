@@ -10,18 +10,6 @@ service mariadb start
 
 sleep 2
 
-# echo "CREATE DATABASE $DB_NAME;" | mariadb
-# echo "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD';" | mariadb
-# echo "GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD' WITH GRANT OPTION;" | mariadb
-# echo "GRANT ALL ON $DB_NAME.* TO 'root'@'%' IDENTIFIED BY '$DB_ROOT_PASSWD' WITH GRANT OPTION;" | mariadb
-# echo "FLUSH PRIVILEGES;" | mariadb
-
-# mariadb -e "CREATE DATABASE $DB_NAME;"
-# mariadb -e "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD';"
-# mariadb -e "GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD' WITH GRANT OPTION;"
-# mariadb -e "GRANT ALL ON $DB_NAME.* TO 'root'@'%' IDENTIFIED BY '$DB_ROOT_PASSWD' WITH GRANT OPTION;"
-# mariadb -e "FLUSH PRIVILEGES;"
-
 if mariadb -e "USE $DB_NAME;" 2> /dev/null; then 
 	echo "Database already exists"
 else
@@ -33,7 +21,20 @@ else
 	echo "Database created"
 fi
 
-
 service mariadb stop
 
+sleep 2
+
 exec mysqld_safe
+
+# echo "CREATE DATABASE $DB_NAME;" | mariadb
+# echo "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD';" | mariadb
+# echo "GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD' WITH GRANT OPTION;" | mariadb
+# echo "GRANT ALL ON $DB_NAME.* TO 'root'@'%' IDENTIFIED BY '$DB_ROOT_PASSWD' WITH GRANT OPTION;" | mariadb
+# echo "FLUSH PRIVILEGES;" | mariadb
+
+# mariadb -e "CREATE DATABASE $DB_NAME;"
+# mariadb -e "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD';"
+# mariadb -e "GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD' WITH GRANT OPTION;"
+# mariadb -e "GRANT ALL ON $DB_NAME.* TO 'root'@'%' IDENTIFIED BY '$DB_ROOT_PASSWD' WITH GRANT OPTION;"
+# mariadb -e "FLUSH PRIVILEGES;"
