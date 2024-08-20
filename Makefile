@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/08/19 14:51:29 by marvin           ###   ########.fr        #
+#    Updated: 2024/08/20 21:15:18 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ all :
 	@ sudo mkdir -p /home/bsuc/data/static_files
 	@ sudo mkdir -p /home/bsuc/data/monitor_files
 	@ sudo mkdir -p /home/bsuc/data/prom_data
+	@ sudo mkdir -p /home/bsuc/data/graf_data
 	@ docker compose -f ./srcs/docker-compose.yml up -d
 
 fclean :
