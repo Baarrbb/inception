@@ -18,6 +18,7 @@ COPY ./conf/datasource.yml /etc/grafana/provisioning/datasources/
 
 COPY ./conf/nginx-dashboard.json /var/lib/grafana/dashboards/
 COPY ./conf/nginx-stats-dashboard.json /var/lib/grafana/dashboards/
+COPY ./conf/wp-stats-dash.json /var/lib/grafana/dashboards/
 
 # CMD ["grafana-server", "--homepath=/usr/share/grafana", "--config=/etc/grafana/grafana.ini"]
 
