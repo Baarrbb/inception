@@ -18,7 +18,7 @@
 	"editable": true,
 	"fiscalYearStartMonth": 0,
 	"graphTooltip": 0,
-	"id": 13,
+	"id": 10,
 	"links": [],
 	"panels": [
 	  {
@@ -30,7 +30,7 @@
 		"fieldConfig": {
 		  "defaults": {
 			"color": {
-			  "mode": "thresholds"
+			  "mode": "palette-classic-by-name"
 			},
 			"mappings": [],
 			"thresholds": {
@@ -51,9 +51,9 @@
 		  "overrides": []
 		},
 		"gridPos": {
-		  "h": 8,
-		  "w": 9,
-		  "x": 0,
+		  "h": 7,
+		  "w": 7,
+		  "x": 5,
 		  "y": 0
 		},
 		"id": 19,
@@ -83,7 +83,7 @@
 			},
 			"disableTextWrap": false,
 			"editorMode": "builder",
-			"expr": "container_start_time_seconds{name=\"nginx\"}",
+			"expr": "container_start_time_seconds{name=\"grafana\"}",
 			"fullMetaSearch": false,
 			"includeNullMetadata": true,
 			"instant": false,
@@ -111,6 +111,7 @@
 			}
 		  }
 		],
+		"transparent": true,
 		"type": "stat"
 	  },
 	  {
@@ -122,7 +123,7 @@
 		"fieldConfig": {
 		  "defaults": {
 			"color": {
-			  "mode": "thresholds"
+			  "mode": "continuous-blues"
 			},
 			"mappings": [],
 			"thresholds": {
@@ -143,8 +144,8 @@
 		  "overrides": []
 		},
 		"gridPos": {
-		  "h": 8,
-		  "w": 12,
+		  "h": 7,
+		  "w": 7,
 		  "x": 12,
 		  "y": 0
 		},
@@ -172,7 +173,7 @@
 			  "uid": "bdv7jfa1eavi8b"
 			},
 			"editorMode": "code",
-			"expr": "time() - container_start_time_seconds{name=\"nginx\"}",
+			"expr": "time() - container_start_time_seconds{name=\"grafana\"}",
 			"hide": false,
 			"instant": false,
 			"legendFormat": "__auto",
@@ -181,6 +182,7 @@
 		  }
 		],
 		"title": "Time since start",
+		"transparent": true,
 		"type": "gauge"
 	  },
 	  {
@@ -188,43 +190,359 @@
 		  "type": "prometheus",
 		  "uid": "bdv7jfa1eavi8b"
 		},
-		"description": "CPU time spent on system operations versus user-level processes within the container.",
 		"fieldConfig": {
 		  "defaults": {
 			"color": {
-			  "mode": "palette-classic-by-name"
+			  "mode": "thresholds"
 			},
-			"custom": {
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
-			  }
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
 			},
-			"mappings": []
+			"unit": "percent"
 		  },
 		  "overrides": []
 		},
 		"gridPos": {
 		  "h": 9,
 		  "w": 7,
-		  "x": 0,
-		  "y": 8
+		  "x": 1,
+		  "y": 7
 		},
-		"id": 7,
+		"id": 23,
 		"options": {
-		  "legend": {
-			"displayMode": "list",
-			"placement": "bottom",
-			"showLegend": true
-		  },
-		  "pieType": "pie",
+		  "minVizHeight": 75,
+		  "minVizWidth": 75,
+		  "orientation": "auto",
 		  "reduceOptions": {
 			"calcs": [
 			  "lastNotNull"
 			],
 			"fields": "",
 			"values": false
+		  },
+		  "showThresholdLabels": false,
+		  "showThresholdMarkers": true,
+		  "sizing": "auto"
+		},
+		"pluginVersion": "11.1.4",
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "bdv7jfa1eavi8b"
+			},
+			"editorMode": "code",
+			"expr": "rate(container_cpu_usage_seconds_total{name=\"grafana\"}[$__rate_interval]) * 100",
+			"instant": false,
+			"legendFormat": "__auto",
+			"range": true,
+			"refId": "A"
+		  }
+		],
+		"title": "Current CPU usage %",
+		"type": "gauge"
+	  },
+	  {
+		"datasource": {
+		  "type": "prometheus",
+		  "uid": "bdv7jfa1eavi8b"
+		},
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic-by-name"
+			},
+			"custom": {
+			  "axisBorderShow": false,
+			  "axisCenteredZero": false,
+			  "axisColorMode": "text",
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 25,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "insertNulls": false,
+			  "lineInterpolation": "linear",
+			  "lineStyle": {
+				"fill": "solid"
+			  },
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			},
+			"unit": "percent"
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 9,
+		  "w": 15,
+		  "x": 9,
+		  "y": 7
+		},
+		"id": 22,
+		"options": {
+		  "legend": {
+			"calcs": [
+			  "last"
+			],
+			"displayMode": "list",
+			"placement": "bottom",
+			"showLegend": true
+		  },
+		  "tooltip": {
+			"mode": "single",
+			"sort": "none"
+		  }
+		},
+		"pluginVersion": "11.1.4",
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "bdv7jfa1eavi8b"
+			},
+			"editorMode": "code",
+			"expr": "rate(container_cpu_usage_seconds_total{name=\"grafana\"}[$__rate_interval]) * 100",
+			"instant": false,
+			"legendFormat": "CPU usage %",
+			"range": true,
+			"refId": "A"
+		  }
+		],
+		"title": "CPU usage over time",
+		"type": "timeseries"
+	  },
+	  {
+		"datasource": {
+		  "type": "prometheus",
+		  "uid": "bdv7jfa1eavi8b"
+		},
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "thresholds"
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			},
+			"unit": "percent"
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 8,
+		  "w": 5,
+		  "x": 0,
+		  "y": 16
+		},
+		"id": 28,
+		"options": {
+		  "minVizHeight": 75,
+		  "minVizWidth": 75,
+		  "orientation": "auto",
+		  "reduceOptions": {
+			"calcs": [
+			  "lastNotNull"
+			],
+			"fields": "",
+			"values": false
+		  },
+		  "showThresholdLabels": false,
+		  "showThresholdMarkers": true,
+		  "sizing": "auto"
+		},
+		"pluginVersion": "11.1.4",
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "bdv7jfa1eavi8b"
+			},
+			"editorMode": "code",
+			"expr": "container_memory_usage_bytes{name=\"grafana\"}",
+			"instant": false,
+			"legendFormat": "memory usage",
+			"range": true,
+			"refId": "A"
+		  },
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "bdv7jfa1eavi8b"
+			},
+			"editorMode": "code",
+			"expr": "machine_memory_bytes",
+			"hide": false,
+			"instant": false,
+			"legendFormat": "total memory available",
+			"range": true,
+			"refId": "B"
+		  }
+		],
+		"title": "Current RAM usage",
+		"transformations": [
+		  {
+			"id": "calculateField",
+			"options": {
+			  "binary": {
+				"left": "memory usage",
+				"operator": "/",
+				"right": "total memory available"
+			  },
+			  "mode": "binary",
+			  "reduce": {
+				"reducer": "sum"
+			  },
+			  "replaceFields": true
+			}
+		  },
+		  {
+			"id": "calculateField",
+			"options": {
+			  "alias": "Memory (RAM) usage %",
+			  "binary": {
+				"left": "memory usage / total memory available",
+				"operator": "*",
+				"right": "100"
+			  },
+			  "mode": "binary",
+			  "reduce": {
+				"reducer": "sum"
+			  },
+			  "replaceFields": true
+			}
+		  }
+		],
+		"type": "gauge"
+	  },
+	  {
+		"datasource": {
+		  "type": "prometheus",
+		  "uid": "bdv7jfa1eavi8b"
+		},
+		"description": "Current memory usage, including all memory regardless of when it was accessed. / Current working set",
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic-by-name"
+			},
+			"custom": {
+			  "axisBorderShow": false,
+			  "axisCenteredZero": false,
+			  "axisColorMode": "text",
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 0,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "insertNulls": false,
+			  "lineInterpolation": "linear",
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			},
+			"unit": "decbytes"
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 8,
+		  "w": 15,
+		  "x": 6,
+		  "y": 16
+		},
+		"id": 17,
+		"options": {
+		  "legend": {
+			"calcs": [],
+			"displayMode": "list",
+			"placement": "bottom",
+			"showLegend": true
 		  },
 		  "tooltip": {
 			"mode": "single",
@@ -239,12 +557,12 @@
 			  "uid": "bdv7jfa1eavi8b"
 			},
 			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_cpu_system_seconds_total{name=\"nginx\"}",
+			"editorMode": "code",
+			"expr": "container_memory_usage_bytes{name=\"grafana\"}",
 			"fullMetaSearch": false,
 			"includeNullMetadata": true,
 			"instant": false,
-			"legendFormat": "System CPU time",
+			"legendFormat": "Total memory used, including cache and buffers",
 			"range": true,
 			"refId": "A",
 			"useBackend": false
@@ -256,62 +574,30 @@
 			},
 			"disableTextWrap": false,
 			"editorMode": "builder",
-			"expr": "container_cpu_user_seconds_total{name=\"nginx\"}",
+			"exemplar": false,
+			"expr": "container_memory_working_set_bytes{name=\"grafana\"}",
 			"fullMetaSearch": false,
 			"hide": false,
 			"includeNullMetadata": true,
 			"instant": false,
-			"legendFormat": "User CPU time",
+			"legendFormat": "Memory actively in use, without cache and buffers",
 			"range": true,
 			"refId": "B",
 			"useBackend": false
 		  }
 		],
-		"title": "CPU system/user",
-		"type": "piechart"
+		"title": "Memory usage (RAM)",
+		"type": "timeseries"
 	  },
 	  {
 		"datasource": {
 		  "type": "prometheus",
 		  "uid": "bdv7jfa1eavi8b"
 		},
-		"description": "CPU usage, showing the overall CPU consumption alongside the breakdown between system and user-level processes.",
 		"fieldConfig": {
 		  "defaults": {
 			"color": {
-			  "mode": "palette-classic"
-			},
-			"custom": {
-			  "axisBorderShow": false,
-			  "axisCenteredZero": false,
-			  "axisColorMode": "text",
-			  "axisLabel": "",
-			  "axisPlacement": "auto",
-			  "barAlignment": 0,
-			  "drawStyle": "line",
-			  "fillOpacity": 0,
-			  "gradientMode": "none",
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
-			  },
-			  "insertNulls": false,
-			  "lineInterpolation": "linear",
-			  "lineWidth": 1,
-			  "pointSize": 5,
-			  "scaleDistribution": {
-				"type": "linear"
-			  },
-			  "showPoints": "auto",
-			  "spanNulls": false,
-			  "stacking": {
-				"group": "A",
-				"mode": "none"
-			  },
-			  "thresholdsStyle": {
-				"mode": "off"
-			  }
+			  "mode": "palette-classic-by-name"
 			},
 			"mappings": [],
 			"thresholds": {
@@ -326,83 +612,52 @@
 				  "value": 80
 				}
 			  ]
-			}
+			},
+			"unit": "decbytes"
 		  },
 		  "overrides": []
 		},
 		"gridPos": {
-		  "h": 9,
-		  "w": 17,
-		  "x": 7,
-		  "y": 8
+		  "h": 8,
+		  "w": 3,
+		  "x": 21,
+		  "y": 16
 		},
-		"id": 3,
+		"id": 29,
 		"options": {
-		  "legend": {
-			"calcs": [],
-			"displayMode": "list",
-			"placement": "bottom",
-			"showLegend": true
+		  "colorMode": "value",
+		  "graphMode": "area",
+		  "justifyMode": "auto",
+		  "orientation": "auto",
+		  "percentChangeColorMode": "standard",
+		  "reduceOptions": {
+			"calcs": [
+			  "lastNotNull"
+			],
+			"fields": "",
+			"values": false
 		  },
-		  "tooltip": {
-			"mode": "single",
-			"sort": "none"
-		  }
+		  "showPercentChange": false,
+		  "textMode": "auto",
+		  "wideLayout": true
 		},
+		"pluginVersion": "11.1.4",
 		"targets": [
 		  {
 			"datasource": {
 			  "type": "prometheus",
 			  "uid": "bdv7jfa1eavi8b"
 			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_cpu_usage_seconds_total{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"hide": false,
-			"includeNullMetadata": true,
+			"editorMode": "code",
+			"expr": "machine_memory_bytes",
 			"instant": false,
-			"legendFormat": "Total CPU time",
+			"legendFormat": "Total ram available",
 			"range": true,
-			"refId": "B",
-			"useBackend": false
-		  },
-		  {
-			"datasource": {
-			  "type": "prometheus",
-			  "uid": "bdv7jfa1eavi8b"
-			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_cpu_system_seconds_total{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"includeNullMetadata": true,
-			"instant": false,
-			"legendFormat": "System CPU time",
-			"range": true,
-			"refId": "A",
-			"useBackend": false
-		  },
-		  {
-			"datasource": {
-			  "type": "prometheus",
-			  "uid": "bdv7jfa1eavi8b"
-			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_cpu_user_seconds_total{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"hide": false,
-			"includeNullMetadata": true,
-			"instant": false,
-			"legendFormat": "User CPU time",
-			"range": true,
-			"refId": "C",
-			"useBackend": false
+			"refId": "A"
 		  }
 		],
-		"title": "CPU sytem/user/total",
-		"type": "timeseries"
+		"title": "Total RAM available",
+		"type": "stat"
 	  },
 	  {
 		"datasource": {
@@ -412,34 +667,39 @@
 		"fieldConfig": {
 		  "defaults": {
 			"color": {
-			  "mode": "palette-classic-by-name"
-			},
-			"custom": {
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
-			  }
+			  "mode": "continuous-BlPu"
 			},
 			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			},
 			"unit": "decbytes"
 		  },
 		  "overrides": []
 		},
 		"gridPos": {
-		  "h": 8,
-		  "w": 5,
+		  "h": 4,
+		  "w": 4,
 		  "x": 0,
-		  "y": 17
+		  "y": 24
 		},
-		"id": 8,
+		"id": 25,
 		"options": {
-		  "legend": {
-			"displayMode": "list",
-			"placement": "bottom",
-			"showLegend": true
-		  },
-		  "pieType": "pie",
+		  "colorMode": "value",
+		  "graphMode": "area",
+		  "justifyMode": "auto",
+		  "orientation": "auto",
+		  "percentChangeColorMode": "standard",
 		  "reduceOptions": {
 			"calcs": [
 			  "lastNotNull"
@@ -447,370 +707,27 @@
 			"fields": "",
 			"values": false
 		  },
-		  "tooltip": {
-			"mode": "single",
-			"sort": "none"
-		  }
+		  "showPercentChange": false,
+		  "textMode": "auto",
+		  "wideLayout": true
 		},
+		"pluginVersion": "11.1.4",
 		"targets": [
 		  {
 			"datasource": {
 			  "type": "prometheus",
 			  "uid": "bdv7jfa1eavi8b"
 			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_network_receive_bytes_total{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"includeNullMetadata": true,
+			"editorMode": "code",
+			"expr": "container_network_receive_bytes_total{name=\"grafana\"}",
 			"instant": false,
 			"legendFormat": "Total bytes received",
 			"range": true,
-			"refId": "A",
-			"useBackend": false
-		  },
-		  {
-			"datasource": {
-			  "type": "prometheus",
-			  "uid": "bdv7jfa1eavi8b"
-			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_network_receive_errors_total{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"hide": false,
-			"includeNullMetadata": true,
-			"instant": false,
-			"legendFormat": "Total errors received",
-			"range": true,
-			"refId": "B",
-			"useBackend": false
+			"refId": "A"
 		  }
 		],
-		"title": "Received network traffic vs errors received",
-		"type": "piechart"
-	  },
-	  {
-		"datasource": {
-		  "type": "prometheus",
-		  "uid": "bdv7jfa1eavi8b"
-		},
-		"fieldConfig": {
-		  "defaults": {
-			"color": {
-			  "mode": "palette-classic"
-			},
-			"custom": {
-			  "axisBorderShow": false,
-			  "axisCenteredZero": false,
-			  "axisColorMode": "text",
-			  "axisLabel": "",
-			  "axisPlacement": "auto",
-			  "barAlignment": 0,
-			  "drawStyle": "line",
-			  "fillOpacity": 0,
-			  "gradientMode": "none",
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
-			  },
-			  "insertNulls": false,
-			  "lineInterpolation": "linear",
-			  "lineWidth": 1,
-			  "pointSize": 5,
-			  "scaleDistribution": {
-				"type": "linear"
-			  },
-			  "showPoints": "auto",
-			  "spanNulls": false,
-			  "stacking": {
-				"group": "A",
-				"mode": "none"
-			  },
-			  "thresholdsStyle": {
-				"mode": "off"
-			  }
-			},
-			"mappings": [],
-			"thresholds": {
-			  "mode": "absolute",
-			  "steps": [
-				{
-				  "color": "green",
-				  "value": null
-				},
-				{
-				  "color": "red",
-				  "value": 80
-				}
-			  ]
-			},
-			"unit": "decbytes"
-		  },
-		  "overrides": []
-		},
-		"gridPos": {
-		  "h": 8,
-		  "w": 7,
-		  "x": 5,
-		  "y": 17
-		},
-		"id": 4,
-		"options": {
-		  "legend": {
-			"calcs": [],
-			"displayMode": "list",
-			"placement": "bottom",
-			"showLegend": true
-		  },
-		  "tooltip": {
-			"mode": "single",
-			"sort": "none"
-		  }
-		},
-		"targets": [
-		  {
-			"datasource": {
-			  "type": "prometheus",
-			  "uid": "bdv7jfa1eavi8b"
-			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_network_receive_bytes_total{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"includeNullMetadata": true,
-			"instant": false,
-			"legendFormat": "Total bytes received",
-			"range": true,
-			"refId": "A",
-			"useBackend": false
-		  },
-		  {
-			"datasource": {
-			  "type": "prometheus",
-			  "uid": "bdv7jfa1eavi8b"
-			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_network_receive_errors_total{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"hide": false,
-			"includeNullMetadata": true,
-			"instant": false,
-			"legendFormat": "Total errors received",
-			"range": true,
-			"refId": "B",
-			"useBackend": false
-		  }
-		],
-		"title": "Network Traffic and Errors Over Time",
-		"type": "timeseries"
-	  },
-	  {
-		"datasource": {
-		  "type": "prometheus",
-		  "uid": "bdv7jfa1eavi8b"
-		},
-		"description": "The proportion of total network bytes transmitted versus network transmission errors.",
-		"fieldConfig": {
-		  "defaults": {
-			"color": {
-			  "mode": "palette-classic-by-name"
-			},
-			"custom": {
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
-			  }
-			},
-			"mappings": [],
-			"unit": "decbytes"
-		  },
-		  "overrides": []
-		},
-		"gridPos": {
-		  "h": 8,
-		  "w": 5,
-		  "x": 12,
-		  "y": 17
-		},
-		"id": 13,
-		"options": {
-		  "legend": {
-			"displayMode": "list",
-			"placement": "bottom",
-			"showLegend": true
-		  },
-		  "pieType": "pie",
-		  "reduceOptions": {
-			"calcs": [
-			  "lastNotNull"
-			],
-			"fields": "",
-			"values": false
-		  },
-		  "tooltip": {
-			"mode": "single",
-			"sort": "none"
-		  }
-		},
-		"targets": [
-		  {
-			"datasource": {
-			  "type": "prometheus",
-			  "uid": "bdv7jfa1eavi8b"
-			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_network_transmit_bytes_total{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"includeNullMetadata": true,
-			"instant": false,
-			"legendFormat": "Total Bytes transmitted",
-			"range": true,
-			"refId": "A",
-			"useBackend": false
-		  },
-		  {
-			"datasource": {
-			  "type": "prometheus",
-			  "uid": "bdv7jfa1eavi8b"
-			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_network_transmit_errors_total{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"hide": false,
-			"includeNullMetadata": true,
-			"instant": false,
-			"legendFormat": "Total Transmit Errors",
-			"range": true,
-			"refId": "B",
-			"useBackend": false
-		  }
-		],
-		"title": "Network Transmission Breakdown",
-		"type": "piechart"
-	  },
-	  {
-		"datasource": {
-		  "type": "prometheus",
-		  "uid": "bdv7jfa1eavi8b"
-		},
-		"description": "shows the trends in network transmission bytes and transmission errors, tracking changes in outgoing network traffic and error rates over time.",
-		"fieldConfig": {
-		  "defaults": {
-			"color": {
-			  "mode": "palette-classic"
-			},
-			"custom": {
-			  "axisBorderShow": false,
-			  "axisCenteredZero": false,
-			  "axisColorMode": "text",
-			  "axisLabel": "",
-			  "axisPlacement": "auto",
-			  "barAlignment": 0,
-			  "drawStyle": "line",
-			  "fillOpacity": 0,
-			  "gradientMode": "none",
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
-			  },
-			  "insertNulls": false,
-			  "lineInterpolation": "linear",
-			  "lineWidth": 1,
-			  "pointSize": 5,
-			  "scaleDistribution": {
-				"type": "linear"
-			  },
-			  "showPoints": "auto",
-			  "spanNulls": false,
-			  "stacking": {
-				"group": "A",
-				"mode": "none"
-			  },
-			  "thresholdsStyle": {
-				"mode": "off"
-			  }
-			},
-			"mappings": [],
-			"thresholds": {
-			  "mode": "absolute",
-			  "steps": [
-				{
-				  "color": "green",
-				  "value": null
-				},
-				{
-				  "color": "red",
-				  "value": 80
-				}
-			  ]
-			},
-			"unit": "decbytes"
-		  },
-		  "overrides": []
-		},
-		"gridPos": {
-		  "h": 8,
-		  "w": 7,
-		  "x": 17,
-		  "y": 17
-		},
-		"id": 12,
-		"options": {
-		  "legend": {
-			"calcs": [],
-			"displayMode": "list",
-			"placement": "bottom",
-			"showLegend": true
-		  },
-		  "tooltip": {
-			"mode": "single",
-			"sort": "none"
-		  }
-		},
-		"targets": [
-		  {
-			"datasource": {
-			  "type": "prometheus",
-			  "uid": "bdv7jfa1eavi8b"
-			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_network_transmit_bytes_total{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"includeNullMetadata": true,
-			"instant": false,
-			"legendFormat": "Total bytes transmitted",
-			"range": true,
-			"refId": "A",
-			"useBackend": false
-		  },
-		  {
-			"datasource": {
-			  "type": "prometheus",
-			  "uid": "bdv7jfa1eavi8b"
-			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_network_transmit_errors_total{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"hide": false,
-			"includeNullMetadata": true,
-			"instant": false,
-			"legendFormat": "Total errors transmitted",
-			"range": true,
-			"refId": "B",
-			"useBackend": false
-		  }
-		],
-		"title": "Network Transmission and Errors Over Time",
-		"type": "timeseries"
+		"title": "Total bytes received",
+		"type": "stat"
 	  },
 	  {
 		"datasource": {
@@ -836,9 +753,9 @@
 		},
 		"gridPos": {
 		  "h": 8,
-		  "w": 12,
-		  "x": 6,
-		  "y": 25
+		  "w": 4,
+		  "x": 4,
+		  "y": 24
 		},
 		"id": 16,
 		"options": {
@@ -869,7 +786,7 @@
 			},
 			"disableTextWrap": false,
 			"editorMode": "builder",
-			"expr": "container_network_receive_bytes_total{name=\"nginx\"}",
+			"expr": "container_network_receive_bytes_total{name=\"grafana\"}",
 			"fullMetaSearch": false,
 			"includeNullMetadata": true,
 			"instant": false,
@@ -885,7 +802,7 @@
 			},
 			"disableTextWrap": false,
 			"editorMode": "builder",
-			"expr": "container_network_transmit_bytes_total{name=\"nginx\"}",
+			"expr": "container_network_transmit_bytes_total{name=\"grafana\"}",
 			"fullMetaSearch": false,
 			"hide": false,
 			"includeNullMetadata": true,
@@ -896,7 +813,7 @@
 			"useBackend": false
 		  }
 		],
-		"title": "Network Traffic Breakdown: Transmitted vs. Received",
+		"title": "Transmitted vs. Received",
 		"type": "piechart"
 	  },
 	  {
@@ -904,11 +821,10 @@
 		  "type": "prometheus",
 		  "uid": "bdv7jfa1eavi8b"
 		},
-		"description": "Current memory usage, including all memory regardless of when it was accessed. / Current working set",
 		"fieldConfig": {
 		  "defaults": {
 			"color": {
-			  "mode": "palette-classic"
+			  "mode": "continuous-BlPu"
 			},
 			"custom": {
 			  "axisBorderShow": false,
@@ -918,7 +834,7 @@
 			  "axisPlacement": "auto",
 			  "barAlignment": 0,
 			  "drawStyle": "line",
-			  "fillOpacity": 0,
+			  "fillOpacity": 25,
 			  "gradientMode": "none",
 			  "hideFrom": {
 				"legend": false,
@@ -962,11 +878,11 @@
 		},
 		"gridPos": {
 		  "h": 8,
-		  "w": 12,
-		  "x": 6,
-		  "y": 33
+		  "w": 8,
+		  "x": 8,
+		  "y": 24
 		},
-		"id": 17,
+		"id": 26,
 		"options": {
 		  "legend": {
 			"calcs": [],
@@ -979,44 +895,21 @@
 			"sort": "none"
 		  }
 		},
-		"pluginVersion": "11.1.4",
 		"targets": [
 		  {
 			"datasource": {
 			  "type": "prometheus",
 			  "uid": "bdv7jfa1eavi8b"
 			},
-			"disableTextWrap": false,
 			"editorMode": "code",
-			"expr": "container_memory_usage_bytes{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"includeNullMetadata": true,
+			"expr": "rate(container_network_transmit_bytes_total{name=\"grafana\"}[$__rate_interval])",
 			"instant": false,
-			"legendFormat": "Total memory used, including cache and buffers",
+			"legendFormat": "Bytes transmitted",
 			"range": true,
-			"refId": "A",
-			"useBackend": false
-		  },
-		  {
-			"datasource": {
-			  "type": "prometheus",
-			  "uid": "bdv7jfa1eavi8b"
-			},
-			"disableTextWrap": false,
-			"editorMode": "builder",
-			"exemplar": false,
-			"expr": "container_memory_working_set_bytes{name=\"nginx\"}",
-			"fullMetaSearch": false,
-			"hide": false,
-			"includeNullMetadata": true,
-			"instant": false,
-			"legendFormat": "Memory actively in use, without cache and buffers",
-			"range": true,
-			"refId": "B",
-			"useBackend": false
+			"refId": "A"
 		  }
 		],
-		"title": "Memory usage (RAM)",
+		"title": "Network bytes transmitted per second",
 		"type": "timeseries"
 	  },
 	  {
@@ -1027,7 +920,7 @@
 		"fieldConfig": {
 		  "defaults": {
 			"color": {
-			  "mode": "palette-classic"
+			  "mode": "continuous-BlPu"
 			},
 			"custom": {
 			  "axisBorderShow": false,
@@ -1037,7 +930,7 @@
 			  "axisPlacement": "auto",
 			  "barAlignment": 0,
 			  "drawStyle": "line",
-			  "fillOpacity": 0,
+			  "fillOpacity": 25,
 			  "gradientMode": "none",
 			  "hideFrom": {
 				"legend": false,
@@ -1081,9 +974,243 @@
 		},
 		"gridPos": {
 		  "h": 8,
-		  "w": 12,
+		  "w": 8,
+		  "x": 16,
+		  "y": 24
+		},
+		"id": 24,
+		"options": {
+		  "legend": {
+			"calcs": [],
+			"displayMode": "list",
+			"placement": "bottom",
+			"showLegend": true
+		  },
+		  "tooltip": {
+			"mode": "single",
+			"sort": "none"
+		  }
+		},
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "bdv7jfa1eavi8b"
+			},
+			"editorMode": "code",
+			"expr": "rate(container_network_receive_bytes_total{name=\"grafana\"}[$__rate_interval])",
+			"instant": false,
+			"legendFormat": "Received bytes/second",
+			"range": true,
+			"refId": "A"
+		  }
+		],
+		"title": "Network Bytes Received Per Second",
+		"type": "timeseries"
+	  },
+	  {
+		"datasource": {
+		  "type": "prometheus",
+		  "uid": "bdv7jfa1eavi8b"
+		},
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "continuous-BlPu"
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			},
+			"unit": "decbytes"
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 4,
+		  "w": 4,
+		  "x": 0,
+		  "y": 28
+		},
+		"id": 27,
+		"options": {
+		  "colorMode": "value",
+		  "graphMode": "area",
+		  "justifyMode": "auto",
+		  "orientation": "auto",
+		  "percentChangeColorMode": "standard",
+		  "reduceOptions": {
+			"calcs": [
+			  "lastNotNull"
+			],
+			"fields": "",
+			"values": false
+		  },
+		  "showPercentChange": false,
+		  "textMode": "auto",
+		  "wideLayout": true
+		},
+		"pluginVersion": "11.1.4",
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "bdv7jfa1eavi8b"
+			},
+			"editorMode": "code",
+			"expr": "container_network_transmit_bytes_total{name=\"grafana\"}",
+			"instant": false,
+			"legendFormat": "Total bytes transmitted",
+			"range": true,
+			"refId": "A"
+		  }
+		],
+		"title": "Total bytes transmitted",
+		"type": "stat"
+	  },
+	  {
+		"datasource": {
+		  "type": "prometheus",
+		  "uid": "bdv7jfa1eavi8b"
+		},
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "thresholds"
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			},
+			"unit": "percent"
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 8,
+		  "w": 5,
+		  "x": 0,
+		  "y": 32
+		},
+		"id": 30,
+		"options": {
+		  "minVizHeight": 75,
+		  "minVizWidth": 75,
+		  "orientation": "auto",
+		  "reduceOptions": {
+			"calcs": [
+			  "lastNotNull"
+			],
+			"fields": "",
+			"values": false
+		  },
+		  "showThresholdLabels": false,
+		  "showThresholdMarkers": true,
+		  "sizing": "auto"
+		},
+		"pluginVersion": "11.1.4",
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "bdv7jfa1eavi8b"
+			},
+			"editorMode": "code",
+			"expr": "(container_fs_usage_bytes{name=\"grafana\"} / container_fs_limit_bytes{name=\"grafana\"}) * 100",
+			"instant": false,
+			"legendFormat": "__auto",
+			"range": true,
+			"refId": "A"
+		  }
+		],
+		"title": "Disk usage",
+		"type": "gauge"
+	  },
+	  {
+		"datasource": {
+		  "type": "prometheus",
+		  "uid": "bdv7jfa1eavi8b"
+		},
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic-by-name"
+			},
+			"custom": {
+			  "axisBorderShow": false,
+			  "axisCenteredZero": false,
+			  "axisColorMode": "text",
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 25,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "insertNulls": false,
+			  "lineInterpolation": "linear",
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			},
+			"unit": "decbytes"
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 8,
+		  "w": 15,
 		  "x": 6,
-		  "y": 41
+		  "y": 32
 		},
 		"id": 20,
 		"options": {
@@ -1105,8 +1232,8 @@
 			  "uid": "bdv7jfa1eavi8b"
 			},
 			"disableTextWrap": false,
-			"editorMode": "builder",
-			"expr": "container_fs_usage_bytes{name=\"nginx\"}",
+			"editorMode": "code",
+			"expr": "container_fs_usage_bytes{name=\"grafana\"}",
 			"fullMetaSearch": false,
 			"includeNullMetadata": true,
 			"instant": false,
@@ -1118,6 +1245,76 @@
 		],
 		"title": "Filesystem Usage over time",
 		"type": "timeseries"
+	  },
+	  {
+		"datasource": {
+		  "type": "prometheus",
+		  "uid": "bdv7jfa1eavi8b"
+		},
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "fixed"
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			},
+			"unit": "decbytes"
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 12,
+		  "w": 3,
+		  "x": 21,
+		  "y": 32
+		},
+		"id": 31,
+		"options": {
+		  "colorMode": "value",
+		  "graphMode": "area",
+		  "justifyMode": "auto",
+		  "orientation": "auto",
+		  "percentChangeColorMode": "standard",
+		  "reduceOptions": {
+			"calcs": [
+			  "lastNotNull"
+			],
+			"fields": "",
+			"values": false
+		  },
+		  "showPercentChange": false,
+		  "textMode": "auto",
+		  "wideLayout": true
+		},
+		"pluginVersion": "11.1.4",
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "bdv7jfa1eavi8b"
+			},
+			"editorMode": "code",
+			"expr": "container_fs_limit_bytes{name=\"grafana\"}",
+			"instant": false,
+			"legendFormat": "Maximum disk storage",
+			"range": true,
+			"refId": "A"
+		  }
+		],
+		"title": "Maximun disk storage",
+		"type": "stat"
 	  }
 	],
 	"schemaVersion": 39,
@@ -1126,12 +1323,13 @@
 	  "list": []
 	},
 	"time": {
-	  "from": "now-3h",
+	  "from": "now-15m",
 	  "to": "now"
 	},
 	"timepicker": {},
 	"timezone": "browser",
-	"title": "nginx container stats",
+	"title": "grafana container stats",
+	"uid": "edvmkofc8ga9sf",
 	"version": 2,
 	"weekStart": ""
   }
