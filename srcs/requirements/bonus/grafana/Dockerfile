@@ -16,20 +16,16 @@ COPY ./conf/grafana.ini /etc/grafana/grafana.ini
 COPY ./conf/dashboard.yml /etc/grafana/provisioning/dashboards/
 COPY ./conf/datasource.yml /etc/grafana/provisioning/datasources/
 
-# COPY ./conf/nginx-dashboard.json /var/lib/grafana/dashboards/
-# COPY ./conf/nginx-stats-dash.json /var/lib/grafana/dashboards/
-
-# COPY ./conf/wp-stats-dash.json /var/lib/grafana/dashboards/
-
 COPY ./conf/dashboards/*.json /var/lib/grafana/dashboards/
 
 COPY ./tools/modif.sh /modif.sh
 RUN bash modif.sh
 
-# CMD ["grafana-server", "--homepath=/usr/share/grafana", "--config=/etc/grafana/grafana.ini"]
 
 COPY ./tools/start.sh /
 RUN chmod +x start.sh
 
 ENTRYPOINT ["./start.sh"]
 
+
+# CMD ["grafana-server", "--homepath=/usr/share/grafana", "--config=/etc/grafana/grafana.ini"]

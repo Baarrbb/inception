@@ -10,6 +10,7 @@ RUN mv cadvisor /usr/local/bin
 EXPOSE 8080
 
 # CMD ["cadvisor", "--store_container_labels=false"]
-CMD ["cadvisor"]
+# CMD ["cadvisor"]
+CMD ["cadvisor", "--docker_only=true"]
 
 # CMD ["bash", "-c", "while true; do sleep 1000; done"]
