@@ -187,14 +187,14 @@ services:
     networks:
       - inception
 
-  php-fpm-exporter:
-    build: ./requirements/bonus/php-fpm-exporter
-    container_name: php-fpm-exporter
+  mysqld-exporter:
+    build: ./requirements/bonus/mysqld-exporter
+    container_name: mysqld-exporter
     restart: always
     expose:
-      - "8080"
+      - "9104"
     depends_on:
-      - wordpress
+      - mariadb
     networks:
       - inception
 
