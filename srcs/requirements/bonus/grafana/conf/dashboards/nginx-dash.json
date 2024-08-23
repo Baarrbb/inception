@@ -398,8 +398,7 @@
 	},
 	"timepicker": {},
 	"timezone": "browser",
-	"title": "Nginx",
-	"uid": "adv7l673wnabkd",
+	"title": "Nginx main server",
 	"version": 3,
 	"weekStart": ""
   }

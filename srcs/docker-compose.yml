@@ -187,6 +187,17 @@ services:
     networks:
       - inception
 
+  php-fpm-exporter:
+    build: ./requirements/bonus/php-fpm-exporter
+    container_name: php-fpm-exporter
+    restart: always
+    expose:
+      - "8080"
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+
 volumes:
   WP_files:
     driver: local

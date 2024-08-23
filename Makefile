@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/08/20 21:15:18 by marvin           ###   ########.fr        #
+#    Updated: 2024/08/23 16:55:23 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,6 +101,8 @@ logs :
 	@ docker logs nginx-exporter
 	@ echo "$(_YELLOW)--- GRAFANA LOGS ---$(_END)"
 	@ docker logs grafana
+	@ echo "$(_YELLOW)--- CADVISOR LOGS ---$(_END)"
+	@ docker logs cadvisor
 
 
 # re: fclean all
