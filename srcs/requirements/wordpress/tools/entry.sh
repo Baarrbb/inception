@@ -12,6 +12,7 @@ WP_EMAIL=$(cat /run/secrets/my_wp_email)
 path=/var/www/wordpress
 
 sed -i 's/listen\s*=\s*\/run\/php\/php8.2-fpm.sock/listen = 0.0.0.0:9000/' /etc/php/8.2/fpm/pool.d/www.conf
+sed -i 's/;pm.status_path = \/status/pm.status_path = \/php_fpm_status/' /etc/php/8.2/fpm/pool.d/www.conf
 
 curl -s -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar

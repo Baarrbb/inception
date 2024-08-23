@@ -266,6 +266,102 @@
 		"fieldConfig": {
 		  "defaults": {
 			"color": {
+			  "mode": "continuous-BlPu"
+			},
+			"custom": {
+			  "axisBorderShow": false,
+			  "axisCenteredZero": false,
+			  "axisColorMode": "text",
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 15,
+			  "gradientMode": "scheme",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "insertNulls": false,
+			  "lineInterpolation": "linear",
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			},
+			"unit": "percent"
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 7,
+		  "w": 24,
+		  "x": 0,
+		  "y": 18
+		},
+		"id": 18,
+		"options": {
+		  "legend": {
+			"calcs": [],
+			"displayMode": "list",
+			"placement": "bottom",
+			"showLegend": false
+		  },
+		  "tooltip": {
+			"mode": "single",
+			"sort": "none"
+		  }
+		},
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "bdv7jfa1eavi8b"
+			},
+			"editorMode": "code",
+			"expr": "sum(rate(container_cpu_usage_seconds_total{id!=\"/\"}[$__rate_interval])) * 100",
+			"instant": false,
+			"legendFormat": "CPU",
+			"range": true,
+			"refId": "A"
+		  }
+		],
+		"title": "Total RAM usage over time",
+		"type": "timeseries"
+	  },
+	  {
+		"datasource": {
+		  "type": "prometheus",
+		  "uid": "bdv7jfa1eavi8b"
+		},
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
 			  "mode": "thresholds"
 			},
 			"mappings": [],
@@ -290,7 +386,7 @@
 		  "h": 7,
 		  "w": 6,
 		  "x": 2,
-		  "y": 18
+		  "y": 25
 		},
 		"id": 6,
 		"options": {
@@ -403,12 +499,12 @@
 		  "h": 7,
 		  "w": 6,
 		  "x": 10,
-		  "y": 18
+		  "y": 25
 		},
 		"id": 13,
 		"options": {
 		  "colorMode": "value",
-		  "graphMode": "none",
+		  "graphMode": "area",
 		  "justifyMode": "auto",
 		  "orientation": "auto",
 		  "percentChangeColorMode": "standard",
@@ -433,7 +529,7 @@
 			"editorMode": "code",
 			"expr": "sum(container_memory_usage_bytes{id!=\"/\"})",
 			"instant": false,
-			"legendFormat": "__auto",
+			"legendFormat": "Current RAM usage",
 			"range": true,
 			"refId": "A"
 		  }
@@ -470,10 +566,10 @@
 		  "overrides": []
 		},
 		"gridPos": {
-		  "h": 17,
+		  "h": 25,
 		  "w": 3,
 		  "x": 21,
-		  "y": 18
+		  "y": 25
 		},
 		"id": 12,
 		"options": {
@@ -503,7 +599,7 @@
 			"editorMode": "code",
 			"expr": "machine_memory_bytes",
 			"instant": false,
-			"legendFormat": "__auto",
+			"legendFormat": "Total RAM",
 			"range": true,
 			"refId": "A"
 		  }
@@ -575,7 +671,7 @@
 		  "h": 10,
 		  "w": 21,
 		  "x": 0,
-		  "y": 25
+		  "y": 32
 		},
 		"id": 5,
 		"options": {
@@ -617,6 +713,102 @@
 		"fieldConfig": {
 		  "defaults": {
 			"color": {
+			  "mode": "palette-classic-by-name"
+			},
+			"custom": {
+			  "axisBorderShow": false,
+			  "axisCenteredZero": false,
+			  "axisColorMode": "text",
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 15,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "insertNulls": false,
+			  "lineInterpolation": "linear",
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			},
+			"unit": "decbytes"
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 8,
+		  "w": 18,
+		  "x": 0,
+		  "y": 42
+		},
+		"id": 19,
+		"options": {
+		  "legend": {
+			"calcs": [],
+			"displayMode": "list",
+			"placement": "bottom",
+			"showLegend": false
+		  },
+		  "tooltip": {
+			"mode": "single",
+			"sort": "none"
+		  }
+		},
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "bdv7jfa1eavi8b"
+			},
+			"editorMode": "code",
+			"expr": "sum(container_memory_usage_bytes{id!=\"/\"})",
+			"instant": false,
+			"legendFormat": "RAM",
+			"range": true,
+			"refId": "A"
+		  }
+		],
+		"title": "Total RAM usage over time ",
+		"type": "timeseries"
+	  },
+	  {
+		"datasource": {
+		  "type": "prometheus",
+		  "uid": "bdv7jfa1eavi8b"
+		},
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
 			  "mode": "continuous-BlPu"
 			},
 			"mappings": [],
@@ -641,7 +833,7 @@
 		  "h": 5,
 		  "w": 6,
 		  "x": 2,
-		  "y": 35
+		  "y": 50
 		},
 		"id": 7,
 		"options": {
@@ -671,12 +863,12 @@
 			"editorMode": "code",
 			"expr": "sum(container_network_receive_bytes_total{id!=\"/\"})",
 			"instant": false,
-			"legendFormat": "__auto",
+			"legendFormat": "Total bytes received",
 			"range": true,
 			"refId": "A"
 		  }
 		],
-		"title": "Total received bytes",
+		"title": "Total bytes received",
 		"type": "stat"
 	  },
 	  {
@@ -706,7 +898,7 @@
 		  "h": 9,
 		  "w": 5,
 		  "x": 10,
-		  "y": 35
+		  "y": 50
 		},
 		"id": 9,
 		"options": {
@@ -790,7 +982,7 @@
 		  "h": 5,
 		  "w": 6,
 		  "x": 16,
-		  "y": 35
+		  "y": 50
 		},
 		"id": 8,
 		"options": {
@@ -820,7 +1012,7 @@
 			"editorMode": "code",
 			"expr": "sum(container_network_transmit_bytes_total{id!=\"/\"})",
 			"instant": false,
-			"legendFormat": "__auto",
+			"legendFormat": "Total bytes transmitted",
 			"range": true,
 			"refId": "A"
 		  }
@@ -846,7 +1038,7 @@
 			  "axisPlacement": "auto",
 			  "barAlignment": 0,
 			  "drawStyle": "line",
-			  "fillOpacity": 0,
+			  "fillOpacity": 5,
 			  "gradientMode": "none",
 			  "hideFrom": {
 				"legend": false,
@@ -855,6 +1047,9 @@
 			  },
 			  "insertNulls": false,
 			  "lineInterpolation": "linear",
+			  "lineStyle": {
+				"fill": "solid"
+			  },
 			  "lineWidth": 1,
 			  "pointSize": 5,
 			  "scaleDistribution": {
@@ -892,7 +1087,7 @@
 		  "h": 10,
 		  "w": 11,
 		  "x": 0,
-		  "y": 44
+		  "y": 59
 		},
 		"id": 10,
 		"options": {
@@ -944,7 +1139,7 @@
 			  "axisPlacement": "auto",
 			  "barAlignment": 0,
 			  "drawStyle": "line",
-			  "fillOpacity": 0,
+			  "fillOpacity": 5,
 			  "gradientMode": "none",
 			  "hideFrom": {
 				"legend": false,
@@ -990,7 +1185,7 @@
 		  "h": 10,
 		  "w": 12,
 		  "x": 12,
-		  "y": 44
+		  "y": 59
 		},
 		"id": 11,
 		"options": {
@@ -1056,7 +1251,7 @@
 		  "h": 7,
 		  "w": 8,
 		  "x": 3,
-		  "y": 54
+		  "y": 69
 		},
 		"id": 14,
 		"options": {
@@ -1169,7 +1364,7 @@
 		  "h": 7,
 		  "w": 8,
 		  "x": 12,
-		  "y": 54
+		  "y": 69
 		},
 		"id": 17,
 		"options": {
@@ -1199,12 +1394,12 @@
 			"editorMode": "code",
 			"expr": "sum(container_fs_usage_bytes{id!=\"/\"})",
 			"instant": false,
-			"legendFormat": "__auto",
+			"legendFormat": "Current disk usage",
 			"range": true,
 			"refId": "A"
 		  }
 		],
-		"title": "Current usage",
+		"title": "Current disk usage",
 		"type": "stat"
 	  },
 	  {
@@ -1239,7 +1434,7 @@
 		  "h": 19,
 		  "w": 3,
 		  "x": 21,
-		  "y": 54
+		  "y": 69
 		},
 		"id": 16,
 		"options": {
@@ -1269,12 +1464,12 @@
 			"editorMode": "code",
 			"expr": "container_fs_limit_bytes{name=\"nginx\"}",
 			"instant": false,
-			"legendFormat": "__auto",
+			"legendFormat": "Total disk",
 			"range": true,
 			"refId": "A"
 		  }
 		],
-		"title": "Total disk usage available",
+		"title": "Total disk available",
 		"type": "stat"
 	  },
 	  {
@@ -1341,7 +1536,7 @@
 		  "h": 10,
 		  "w": 21,
 		  "x": 0,
-		  "y": 61
+		  "y": 76
 		},
 		"id": 15,
 		"options": {
@@ -1376,14 +1571,14 @@
 		"type": "timeseries"
 	  }
 	],
-	"refresh": "",
+	"refresh": "5s",
 	"schemaVersion": 39,
 	"tags": [],
 	"templating": {
 	  "list": []
 	},
 	"time": {
-	  "from": "now-6h",
+	  "from": "now-15m",
 	  "to": "now"
 	},
 	"timepicker": {},

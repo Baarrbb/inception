@@ -91,6 +91,7 @@ services:
       - nginx
     volumes:
       - "WP_files:/srv/ftp"
+      - "ftp-log:/var/log/"
     networks:
       - inception
 
@@ -111,6 +112,7 @@ services:
       - "8080"
     volumes:
       - "monitor_files:/var/lib/monitorix"
+      - "ftp-log:/var/log/ftp"
     networks:
       - inception
     cap_add:
@@ -179,7 +181,6 @@ services:
       - "/dev/disk/:/dev/disk:ro"
 
       # - "/:/rootfs:ro"
-      
       # - "/var/run/docker.sock:/var/run/docker.sock:ro"
       # - "/sys:/sys:ro"
       # - "/var/lib/docker/:/var/lib/docker:ro"
@@ -211,6 +212,7 @@ volumes:
       type: none
       o: bind
       device: "/home/bsuc/data/monitor_files"
+  ftp-log:
   # prom_data:
   #   driver: local
   #   driver_opts:
