@@ -187,16 +187,6 @@ services:
     networks:
       - inception
 
-  mysqld-exporter:
-    build: ./requirements/bonus/mysqld-exporter
-    container_name: mysqld-exporter
-    restart: always
-    expose:
-      - "9104"
-    depends_on:
-      - mariadb
-    networks:
-      - inception
 
 volumes:
   WP_files:

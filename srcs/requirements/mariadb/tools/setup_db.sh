@@ -18,10 +18,9 @@ else
 	mariadb -e "GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWD' WITH GRANT OPTION;"
 	mariadb -e "GRANT ALL ON $DB_NAME.* TO 'root'@'%' IDENTIFIED BY '$DB_ROOT_PASSWD' WITH GRANT OPTION;"
 
-	mariadb -e "CREATE USER 'exporter'@'%' IDENTIFIED BY 'lala' WITH MAX_USER_CONNECTIONS 3;"
-	mariadb -e "GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'%';"
-
+	mariadb -e "CREATE USER 'monitor'@'%' IDENTIFIED BY 'lala';"
 	mariadb -e "FLUSH PRIVILEGES;"
+	# mariadb -e "GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'%';"
 
 	echo "Database created"
 fi
