@@ -187,6 +187,17 @@ services:
     networks:
       - inception
 
+  fail2ban:
+    build: ./requirements/bonus/fail2ban
+    container_name: fail2ban
+    restart: always
+    depends_on:
+      - ftp
+    volumes:
+      - "ftp-log:/var/log/ftp"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    cap_add:
+      - NET_ADMIN
 
 volumes:
   WP_files:
@@ -214,6 +225,12 @@ volumes:
       o: bind
       device: "/home/bsuc/data/monitor_files"
   ftp-log:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "/home/bsuc/data/log"
+
   # prom_data:
   #   driver: local
   #   driver_opts:

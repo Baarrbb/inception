@@ -1,0 +1,18 @@
+[sshd]
+enabled = false
+
+[vsftpd]
+enabled = true
+port = ftp,ftp-data,ftps,ftps-data
+logpath = /var/log/ftp/vsftpd.log
+bantime = 1m
+failregex = ^.*FTP response: Client "<HOST>".*"530.*"$
+action = iptables[name=VSFTPD, port=ftp, protocal=tcp]
+
+# [grafana]
+# port = 3000
+# logpath = /var/log/grafana/grafana.log
+# 
+# [monitorix]
+# port = 8080
+# logpath = /var/log/monitorix/monitorix-httpd
