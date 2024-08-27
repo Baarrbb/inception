@@ -198,6 +198,8 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     cap_add:
       - NET_ADMIN
+      - NET_RAW
+      - SYS_MODULE
 
 volumes:
   WP_files:

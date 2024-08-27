@@ -1,13 +1,19 @@
+# [DEFAULT]
+# banaction = my_iptables-multiport
+# banaction_allports = my_iptables-allports
+
 [sshd]
 enabled = false
 
 [vsftpd]
 enabled = true
-port = ftp,ftp-data,ftps,ftps-data
+# port = ftp,ftp-data,ftps,ftps-data
+port = 21, 40000-40100
 logpath = /var/log/ftp/vsftpd.log
 bantime = 3m
 failregex = ^.*FTP response: Client "<HOST>".*"530.*"$
-action = iptables[name=VSFTPD, port=ftp, protocal=tcp]
+# action = iptables[name=VSFTPD, port="21,40000-40100", protocol=tcp, chain=DOCKER-USER]
+
 
 # [grafana]
 # port = 3000
