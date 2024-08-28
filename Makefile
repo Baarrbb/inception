@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/26 22:53:10 by marvin            #+#    #+#              #
-#    Updated: 2024/08/26 15:02:59 by marvin           ###   ########.fr        #
+#    Updated: 2024/08/28 18:49:48 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ all :
 	@ sudo mkdir -p /home/bsuc/data/static_files
 	@ sudo mkdir -p /home/bsuc/data/monitor_files
 	@ sudo mkdir -p /home/bsuc/data/log
+	@ sudo mkdir -p /home/bsuc/data/portainer
 # @ sudo mkdir -p /home/bsuc/data/prom_data
 # @ sudo mkdir -p /home/bsuc/data/graf_data
 	@ docker compose -f ./srcs/docker-compose.yml up -d
@@ -66,7 +67,6 @@ fclean :
 clean : stop
 	@ docker ps -qa | xargs docker rm 2> /dev/null || true
 	@ docker images -qa | xargs docker rmi -f 2> /dev/null || true
-	@ sudo rm -rf /home/bsuc/data/log
 
 restart : clean all
 
@@ -103,9 +103,10 @@ logs :
 	@ docker logs nginx-exporter
 	@ echo "$(_YELLOW)--- GRAFANA LOGS ---$(_END)"
 	@ docker logs grafana
-	@ echo "$(_YELLOW)--- CADVISOR LOGS ---$(_END)"
-	@ docker logs cadvisor
-
+# @ echo "$(_YELLOW)--- CADVISOR LOGS ---$(_END)"
+# @ docker logs cadvisor
+	@ echo "$(_YELLOW)--- PORTAINER LOGS ---$(_END)"
+	@ docker logs portainer
 
 re: fclean all
 

@@ -53,6 +53,7 @@ services:
       - monitorix
       - prometheus
       - grafana
+      - portainer
     volumes:
       - "WP_files:/var/www/wordpress"
     networks:
@@ -187,19 +188,18 @@ services:
     networks:
       - inception
 
-  fail2ban:
-    build: ./requirements/bonus/fail2ban
-    container_name: fail2ban
+  portainer:
+    build: ./requirements/bonus/portainer
+    container_name: portainer
     restart: always
-    depends_on:
-      - ftp
+    expose:
+      - "9000"
     volumes:
-      - "ftp-log:/var/log/ftp"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
-      - SYS_MODULE
+      - "portainer_data:/data"
+    networks:
+      - inception
+
 
 volumes:
   WP_files:
@@ -232,6 +232,12 @@ volumes:
       type: none
       o: bind
       device: "/home/bsuc/data/log"
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "/home/bsuc/data/portainer"
 
   # prom_data:
   #   driver: local
