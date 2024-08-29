@@ -12,7 +12,8 @@ tab=( "wordpress"
 		"prometheus"
 		"nginx-exporter"
 		"grafana"
-		"cadvisor")
+		"cadvisor"
+		"portainer")
 
 for i in ${tab[@]}; do
 	sed "s/name=\\\\\"nginx\\\\\"/name=\\\\\"$i\\\\\"/g" $path/nginx-stats-dash.json > $path/${i}-stats-dash.json

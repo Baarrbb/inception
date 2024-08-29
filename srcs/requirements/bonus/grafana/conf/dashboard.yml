@@ -5,8 +5,9 @@ providers:
   - name: 'default'
     orgId: 1
     folder: ''
+    forlderUid: ''
     type: file
-    allowUiUpdates: true
+    # allowUiUpdates: true
     options:
       path: /var/lib/grafana/dashboards
 
