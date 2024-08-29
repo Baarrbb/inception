@@ -1,1 +1,38 @@
-<h1>TIIIIITTTRRREEEE</h1>
+<!-- <h1>TIIIIITTTRRREEEE</h1> -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carte des Campus 42</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <style>
+    #map { height: 600px; width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script>
+    // Créer la carte et définir la vue initiale
+    var map = L.map('map').setView([20, 0], 2); // Centrer sur l'équateur
+
+    // Ajouter la couche de tuiles (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Données des campus
+    var campuses = [
+      { "name": "42 Paris", "lat": 48.8922, "lon": 2.3250 },
+      { "name": "42 Lyon", "lat": 45.7678, "lon": 4.8342 },
+      { "name": "42 Montreal", "lat": 45.5088, "lon": -73.5540 }
+    ];
+
+    // Ajouter des marqueurs pour chaque campus
+    campuses.forEach(function(campus) {
+      L.marker([campus.lat, campus.lon])
+        .addTo(map)
+        .bindPopup(campus.name);
+    });
+  </script>
+</body>
+</html>
